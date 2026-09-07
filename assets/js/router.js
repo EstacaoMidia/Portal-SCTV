@@ -107,6 +107,9 @@ function renderNoticia(n) {
   }
   const kick = q('.kicker-cat');
   if (kick) kick.textContent = `${n.categoria.toUpperCase()} • SCTV`;
+  // Assinatura dinâmica: autor vinculado ao autor_id no salvamento
+  const byAuthor = q('.byline__info strong');
+  if (byAuthor) byAuthor.innerHTML = `Por <a href="/autor/redacao-sctv">${esc(n.autor_nome || 'Redação SCTV')}</a>`;
   document.title = `${n.titulo.slice(0, 65)} | SCTV`;
   window.scrollTo({ top: 0 });
 }
