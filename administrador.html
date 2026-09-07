@@ -322,22 +322,31 @@
     }
 
     async function loadBanners() {
-      if (adsLoaded) return;
-      adsLoaded = true;
       const box = document.getElementById('adsSlots');
-      box.innerHTML = SLOTS.map(slotCard).join('');
-      box.querySelectorAll('[data-slot]').forEach((card) => {
-        card.querySelector('[data-f="tipo"]').addEventListener('change', () => toggleSlot(card));
-        card.querySelector('[data-f="url"]').addEventListener('input', (e) => { card.querySelector('[data-preview]').src = e.target.value; });
-        card.querySelector('[data-f="file"]').addEventListener('change', (e) => {
-          const f = e.target.files[0];
-          if (f) card.querySelector('[data-preview]').src = URL.createObjectURL(f);
+      if (!box) return;
+      // 1) Render IMEDIATO dos 4 formulários (nunca bloqueia a UI)
+      if (!adsLoaded) {
+        adsLoaded = true;
+        box.innerHTML = SLOTS.map(slotCard).join('');
+        box.querySelectorAll('[data-slot]').forEach((card) => {
+          card.querySelector('[data-f="tipo"]').addEventListener('change', () => toggleSlot(card));
+          card.querySelector('[data-f="url"]').addEventListener('input', (e) => { card.querySelector('[data-preview]').src = e.target.value; });
+          card.querySelector('[data-f="file"]').addEventListener('change', (e) => {
+            const f = e.target.files[0];
+            if (f) card.querySelector('[data-preview]').src = URL.createObjectURL(f);
+          });
         });
-      });
+      }
+      // 2) Preenchimento com timeout de 3s: falhou/vazio = mantém em branco
       try {
-        const { data, error } = await supabase.from('banners').select('*');
+        const query = supabase.from('banners').select('*');
+        const { data, error } = await Promise.race([
+          query,
+          new Promise((_, rej) => setTimeout(() => rej(new Error('Tempo esgotado (3s)')), 3000))
+        ]);
         if (error) throw error;
-        (data || []).forEach((b) => {
+        const rows = data || [];
+        rows.forEach((b) => {
           const card = box.querySelector(`[data-slot="${b.posicao}"]`);
           if (!card) return;
           card.querySelector('[data-f="tipo"]').value = b.tipo || 'manual';
@@ -347,8 +356,11 @@
           toggleSlot(card);
           if (b.imagem_url) card.querySelector('[data-preview]').src = b.imagem_url;
         });
+        if (!rows.length) say('Nenhum banner salvo ainda — preencha os espaços e clique em Salvar.', true);
       } catch (e) {
-        say('Aviso banners: ' + (e.message || e) + ' Rode o banners.sql no Supabase.', false);
+        console.error('[SCTV banners] falha ao carregar:', e);
+        const extra = (e && e.code === '42P01') ? ' Rode o banners.sql no Supabase.' : ' Verifique conexão/tabela.';
+        say('Aviso banners: ' + ((e && e.message) || e) + extra, false);
       }
     }
 
@@ -358,6 +370,8 @@
       const card = btn.closest('[data-slot]');
       const posicao = card.dataset.slot;
       btn.disabled = true;
+      const btnOld = btn.textContent;
+      btn.textContent = '⏳ Salvando...';
       try {
         let imagem_url = card.querySelector('[data-f="url"]').value.trim();
         const file = card.querySelector('[data-f="file"]').files[0];
@@ -380,13 +394,20 @@
           ativo: tipo !== 'desativado'
         }, { onConflict: 'posicao' });
         if (error) throw error;
+        console.info(`[SCTV banners] "${posicao}" salvo com sucesso.`);
+        btn.textContent = '✅ Salvo com sucesso!';
         say(`Anúncio "${posicao}" salvo ✅`, true);
+        setTimeout(() => { btn.textContent = btnOld; btn.disabled = false; }, 2500);
       } catch (err) {
+        console.error(`[SCTV banners] erro ao salvar "${posicao}":`, err);
+        btn.textContent = '❌ Erro — tente de novo';
         say('Erro ao salvar: ' + (err.message || err), false);
+        setTimeout(() => { btn.textContent = btnOld; btn.disabled = false; }, 2500);
       }
-      btn.disabled = false;
     });
 
+    // Pré-render dos formulários de banners (síncrono; busca preenche depois)
+    loadBanners();
     await carregar();
     await carregarMats();
     });
