@@ -74,6 +74,7 @@
       <button data-tab="nova" role="tab" aria-selected="false">📝 Nova Matéria</button>
       <button data-tab="materias" role="tab" aria-selected="true">📰 Gerenciar Matérias</button>
       <button data-tab="users" role="tab" aria-selected="false">👥 Aprovar Correspondentes <span id="badgePend"></span></button>
+      <button data-tab="ads" role="tab" aria-selected="false">📢 Banners &amp; Anúncios</button>
     </div>
 
     <section class="form-card" id="panel-materias" aria-label="Gerenciar matérias">
@@ -115,6 +116,13 @@
         </table>
       </div>
     </section>
+
+    <section class="form-card" id="panel-ads" hidden aria-label="Banners e anúncios">
+      <h2 style="font-size:1rem;margin-bottom:6px">📢 Banners &amp; Anúncios</h2>
+      <p style="font-size:.84rem;color:var(--muted)">Gerencie os 4 espaços do portal. Salvo na tabela <b>banners</b> e aplicado na Home e nas matérias em segundos.</p>
+      <div id="adsSlots" style="margin-top:12px"><p>Carregando espaços...</p></div>
+    </section>
+
     <p id="adminMsg" class="form-ok" role="status" aria-live="polite" hidden style="margin-top:12px"></p>
   </main>
 
@@ -128,8 +136,10 @@
         document.querySelectorAll('[data-tab]').forEach(function (x) { x.setAttribute('aria-selected', String(x.dataset.tab === name)); });
         var m = document.getElementById('panel-materias');
         var u = document.getElementById('panel-users');
+        var a = document.getElementById('panel-ads');
         if (m) m.hidden = name !== 'materias';
         if (u) u.hidden = name !== 'users';
+        if (a) a.hidden = name !== 'ads';
       }
       document.querySelectorAll('[data-tab]').forEach(function (t) {
         t.addEventListener('click', function () { selectTab(t.dataset.tab); });
@@ -271,7 +281,111 @@
       t.setAttribute('aria-selected', 'true');
       document.getElementById('panel-materias').hidden = t.dataset.tab !== 'materias';
       document.getElementById('panel-users').hidden = t.dataset.tab !== 'users';
+      document.getElementById('panel-ads').hidden = t.dataset.tab !== 'ads';
+      if (t.dataset.tab === 'ads') loadBanners();
     }));
+
+    // ---- Banners & Anúncios (upsert por posicao) ----
+    const SLOTS = [
+      { id: 'topo_principal', label: 'Topo principal (Header 720×90)' },
+      { id: 'lateral_topo', label: 'Sidebar direita (300×250)' },
+      { id: 'entre_materias', label: 'In-feed (entre matérias)' },
+      { id: 'rodape', label: 'Rodapé (Footer full-width)' }
+    ];
+    let adsLoaded = false;
+
+    function slotCard(s) {
+      return `<div class="form-card" style="margin-bottom:12px" data-slot="${s.id}">
+        <h3 style="font-size:.95rem;margin-bottom:10px">${s.label} <span class="role-tag">${s.id}</span></h3>
+        <div class="form-row">
+          <div class="field"><label>Tipo</label><select data-f="tipo">
+            <option value="manual">Banner manual (PNG/GIF)</option>
+            <option value="adsense">Google AdSense</option>
+            <option value="desativado">Desativado</option>
+          </select></div>
+          <div class="field"><label>Link de destino (nova aba)</label><input data-f="link" type="url" placeholder="https://anunciante.com" /></div>
+        </div>
+        <div class="field" data-wrap="manual"><label>Imagem — upload ou URL</label>
+          <input data-f="file" type="file" accept="image/*" />
+          <input data-f="url" type="url" placeholder="https://..." style="margin-top:6px" />
+          <img data-preview alt="Prévia do banner" style="width:100%;height:auto;max-height:160px;object-fit:cover;object-position:center;border-radius:8px;margin-top:8px;background:#020617" />
+        </div>
+        <div class="field" data-wrap="adsense" hidden><label>Código AdSense (&lt;script&gt;)</label><textarea data-f="script" rows="3" placeholder="Cole aqui o código do bloco de anúncios"></textarea></div>
+        <button class="btn-ok" data-save="${s.id}">💾 Salvar Anúncio</button>
+      </div>`;
+    }
+
+    function toggleSlot(card) {
+      const t = card.querySelector('[data-f="tipo"]').value;
+      card.querySelector('[data-wrap="manual"]').hidden = t !== 'manual';
+      card.querySelector('[data-wrap="adsense"]').hidden = t !== 'adsense';
+    }
+
+    async function loadBanners() {
+      if (adsLoaded) return;
+      adsLoaded = true;
+      const box = document.getElementById('adsSlots');
+      box.innerHTML = SLOTS.map(slotCard).join('');
+      box.querySelectorAll('[data-slot]').forEach((card) => {
+        card.querySelector('[data-f="tipo"]').addEventListener('change', () => toggleSlot(card));
+        card.querySelector('[data-f="url"]').addEventListener('input', (e) => { card.querySelector('[data-preview]').src = e.target.value; });
+        card.querySelector('[data-f="file"]').addEventListener('change', (e) => {
+          const f = e.target.files[0];
+          if (f) card.querySelector('[data-preview]').src = URL.createObjectURL(f);
+        });
+      });
+      try {
+        const { data, error } = await supabase.from('banners').select('*');
+        if (error) throw error;
+        (data || []).forEach((b) => {
+          const card = box.querySelector(`[data-slot="${b.posicao}"]`);
+          if (!card) return;
+          card.querySelector('[data-f="tipo"]').value = b.tipo || 'manual';
+          card.querySelector('[data-f="link"]').value = b.link_destino || '';
+          card.querySelector('[data-f="url"]').value = b.imagem_url || '';
+          card.querySelector('[data-f="script"]').value = b.script_adsense || '';
+          toggleSlot(card);
+          if (b.imagem_url) card.querySelector('[data-preview]').src = b.imagem_url;
+        });
+      } catch (e) {
+        say('Aviso banners: ' + (e.message || e) + ' Rode o banners.sql no Supabase.', false);
+      }
+    }
+
+    document.getElementById('adsSlots').addEventListener('click', async (e) => {
+      const btn = e.target.closest('button[data-save]');
+      if (!btn) return;
+      const card = btn.closest('[data-slot]');
+      const posicao = card.dataset.slot;
+      btn.disabled = true;
+      try {
+        let imagem_url = card.querySelector('[data-f="url"]').value.trim();
+        const file = card.querySelector('[data-f="file"]').files[0];
+        if (file) {
+          const ext = file.name.split('.').pop().toLowerCase();
+          const path = `${posicao}/${Date.now()}.${ext}`;
+          const { error: upErr } = await supabase.storage.from('banners').upload(path, file, { upsert: false });
+          if (upErr) throw upErr;
+          imagem_url = supabase.storage.from('banners').getPublicUrl(path).data.publicUrl;
+          card.querySelector('[data-f="url"]').value = imagem_url;
+          card.querySelector('[data-preview]').src = imagem_url;
+        }
+        const tipo = card.querySelector('[data-f="tipo"]').value;
+        const { error } = await supabase.from('banners').upsert({
+          posicao,
+          tipo,
+          imagem_url: imagem_url || null,
+          link_destino: card.querySelector('[data-f="link"]').value.trim() || null,
+          script_adsense: card.querySelector('[data-f="script"]').value || null,
+          ativo: tipo !== 'desativado'
+        }, { onConflict: 'posicao' });
+        if (error) throw error;
+        say(`Anúncio "${posicao}" salvo ✅`, true);
+      } catch (err) {
+        say('Erro ao salvar: ' + (err.message || err), false);
+      }
+      btn.disabled = false;
+    });
 
     await carregar();
     await carregarMats();
