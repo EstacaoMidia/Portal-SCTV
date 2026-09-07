@@ -120,7 +120,80 @@
     <section class="form-card" id="panel-ads" hidden aria-label="Banners e anúncios">
       <h2 style="font-size:1rem;margin-bottom:6px">📢 Banners &amp; Anúncios</h2>
       <p style="font-size:.84rem;color:var(--muted)">Gerencie os 4 espaços do portal. Salvo na tabela <b>banners</b> e aplicado na Home e nas matérias em segundos.</p>
-      <div id="adsSlots" style="margin-top:12px"><p>Carregando espaços...</p></div>
+      <div id="adsSlots" style="margin-top:12px">
+        <div class="form-card" style="margin-bottom:12px" data-slot="topo_principal">
+          <h3 style="font-size:.95rem;margin-bottom:10px">Topo principal (Header 720×90) <span class="role-tag">topo_principal</span></h3>
+          <div class="form-row">
+            <div class="field"><label for="tipo-topo_principal">Tipo</label><select id="tipo-topo_principal" data-f="tipo">
+              <option value="manual">Banner manual (PNG/GIF)</option>
+              <option value="adsense">Google AdSense</option>
+              <option value="desativado">Desativado</option>
+            </select></div>
+            <div class="field"><label for="link-topo_principal">Link de destino (nova aba)</label><input id="link-topo_principal" data-f="link" type="url" placeholder="https://anunciante.com" /></div>
+          </div>
+          <div class="field" data-wrap="manual"><label>Imagem — upload ou URL</label>
+            <input data-f="file" type="file" accept="image/*" aria-label="Upload da imagem do topo" />
+            <input id="url-topo_principal" data-f="url" type="url" placeholder="https://..." style="margin-top:6px" />
+            <img data-preview alt="Prévia do banner do topo" style="width:100%;height:auto;max-height:160px;object-fit:cover;object-position:center;border-radius:8px;margin-top:8px;background:#020617" />
+          </div>
+          <div class="field" data-wrap="adsense" hidden><label for="script-topo_principal">Código AdSense (&lt;script&gt;)</label><textarea id="script-topo_principal" data-f="script" rows="3" placeholder="Cole aqui o código do bloco de anúncios"></textarea></div>
+          <button class="btn-ok" data-save="topo_principal" type="button">💾 Salvar Anúncio</button>
+        </div>
+        <div class="form-card" style="margin-bottom:12px" data-slot="lateral_topo">
+          <h3 style="font-size:.95rem;margin-bottom:10px">Sidebar direita (300×250) <span class="role-tag">lateral_topo</span></h3>
+          <div class="form-row">
+            <div class="field"><label for="tipo-lateral_topo">Tipo</label><select id="tipo-lateral_topo" data-f="tipo">
+              <option value="manual">Banner manual (PNG/GIF)</option>
+              <option value="adsense">Google AdSense</option>
+              <option value="desativado">Desativado</option>
+            </select></div>
+            <div class="field"><label for="link-lateral_topo">Link de destino (nova aba)</label><input id="link-lateral_topo" data-f="link" type="url" placeholder="https://anunciante.com" /></div>
+          </div>
+          <div class="field" data-wrap="manual"><label>Imagem — upload ou URL</label>
+            <input data-f="file" type="file" accept="image/*" aria-label="Upload da imagem da sidebar" />
+            <input id="url-lateral_topo" data-f="url" type="url" placeholder="https://..." style="margin-top:6px" />
+            <img data-preview alt="Prévia do banner da sidebar" style="width:100%;height:auto;max-height:160px;object-fit:cover;object-position:center;border-radius:8px;margin-top:8px;background:#020617" />
+          </div>
+          <div class="field" data-wrap="adsense" hidden><label for="script-lateral_topo">Código AdSense (&lt;script&gt;)</label><textarea id="script-lateral_topo" data-f="script" rows="3" placeholder="Cole aqui o código do bloco de anúncios"></textarea></div>
+          <button class="btn-ok" data-save="lateral_topo" type="button">💾 Salvar Anúncio</button>
+        </div>
+        <div class="form-card" style="margin-bottom:12px" data-slot="entre_materias">
+          <h3 style="font-size:.95rem;margin-bottom:10px">In-feed (entre matérias) <span class="role-tag">entre_materias</span></h3>
+          <div class="form-row">
+            <div class="field"><label for="tipo-entre_materias">Tipo</label><select id="tipo-entre_materias" data-f="tipo">
+              <option value="manual">Banner manual (PNG/GIF)</option>
+              <option value="adsense">Google AdSense</option>
+              <option value="desativado">Desativado</option>
+            </select></div>
+            <div class="field"><label for="link-entre_materias">Link de destino (nova aba)</label><input id="link-entre_materias" data-f="link" type="url" placeholder="https://anunciante.com" /></div>
+          </div>
+          <div class="field" data-wrap="manual"><label>Imagem — upload ou URL</label>
+            <input data-f="file" type="file" accept="image/*" aria-label="Upload da imagem in-feed" />
+            <input id="url-entre_materias" data-f="url" type="url" placeholder="https://..." style="margin-top:6px" />
+            <img data-preview alt="Prévia do banner in-feed" style="width:100%;height:auto;max-height:160px;object-fit:cover;object-position:center;border-radius:8px;margin-top:8px;background:#020617" />
+          </div>
+          <div class="field" data-wrap="adsense" hidden><label for="script-entre_materias">Código AdSense (&lt;script&gt;)</label><textarea id="script-entre_materias" data-f="script" rows="3" placeholder="Cole aqui o código do bloco de anúncios"></textarea></div>
+          <button class="btn-ok" data-save="entre_materias" type="button">💾 Salvar Anúncio</button>
+        </div>
+        <div class="form-card" style="margin-bottom:12px" data-slot="rodape">
+          <h3 style="font-size:.95rem;margin-bottom:10px">Rodapé (Footer full-width) <span class="role-tag">rodape</span></h3>
+          <div class="form-row">
+            <div class="field"><label for="tipo-rodape">Tipo</label><select id="tipo-rodape" data-f="tipo">
+              <option value="manual">Banner manual (PNG/GIF)</option>
+              <option value="adsense">Google AdSense</option>
+              <option value="desativado">Desativado</option>
+            </select></div>
+            <div class="field"><label for="link-rodape">Link de destino (nova aba)</label><input id="link-rodape" data-f="link" type="url" placeholder="https://anunciante.com" /></div>
+          </div>
+          <div class="field" data-wrap="manual"><label>Imagem — upload ou URL</label>
+            <input data-f="file" type="file" accept="image/*" aria-label="Upload da imagem do rodapé" />
+            <input id="url-rodape" data-f="url" type="url" placeholder="https://..." style="margin-top:6px" />
+            <img data-preview alt="Prévia do banner do rodapé" style="width:100%;height:auto;max-height:160px;object-fit:cover;object-position:center;border-radius:8px;margin-top:8px;background:#020617" />
+          </div>
+          <div class="field" data-wrap="adsense" hidden><label for="script-rodape">Código AdSense (&lt;script&gt;)</label><textarea id="script-rodape" data-f="script" rows="3" placeholder="Cole aqui o código do bloco de anúncios"></textarea></div>
+          <button class="btn-ok" data-save="rodape" type="button">💾 Salvar Anúncio</button>
+        </div>
+      </div>
     </section>
 
     <p id="adminMsg" class="form-ok" role="status" aria-live="polite" hidden style="margin-top:12px"></p>
@@ -186,10 +259,10 @@
         document.getElementById('cAprov').textContent = all.filter((p) => p.status === 'aprovado').length;
         const nPend = all.filter((p) => p.status === 'pendente').length;
         document.getElementById('badgePend').textContent = nPend ? `(${nPend})` : '';
-        if (!all.length) { tbody.innerHTML = '<tr><td colspan="4">Nenhum correspondente cadastrado até o momento.</td></tr>'; return; }
+        if (!all.length) { tbody.innerHTML = '<tr><td colspan="4">Nenhum correspondente cadastrado até o momento. <button class="btn-out" data-retry-users>🔄 Tentar novamente</button></td></tr>'; return; }
         render();
       } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="4">⚠️ Não foi possível carregar: ' + esc((e && e.message) || e) + '</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4">⚠️ Não foi possível carregar: ' + esc((e && e.message) || e) + ' <button class="btn-out" data-retry-users>🔄 Tentar novamente</button></td></tr>';
       }
     }
 
@@ -208,12 +281,16 @@
     }
 
     tbody.addEventListener('click', async (e) => {
+      if (e.target.closest('[data-retry-users]')) { carregar(); return; }
       const b = e.target.closest('button[data-act]');
       if (!b) return;
       b.disabled = true;
       const { error } = await supabase.from('profiles').update({ status: b.dataset.act }).eq('id', b.dataset.id);
       if (error) { say('Erro: ' + error.message, false); b.disabled = false; return; }
       say(`Perfil ${b.dataset.act === 'aprovado' ? 'APROVADO ✅' : 'RECUSADO ⛔'} com sucesso.`, true);
+      await carregar();
+    });
+
     // ---- Gerenciar matérias (pendentes + todas) ----
     let mats = [];
     let mfiltro = 'todas';
@@ -227,11 +304,11 @@
         document.getElementById('mTotal').textContent = mats.length;
         document.getElementById('mPend').textContent = mats.filter((m) => m.status === 'pendente').length;
         document.getElementById('mPub').textContent = mats.filter((m) => m.status === 'publicada').length;
-        if (!mats.length) { tbodyM.innerHTML = '<tr><td colspan="4">Nenhuma matéria cadastrada até o momento.</td></tr>'; return; }
+        if (!mats.length) { tbodyM.innerHTML = '<tr><td colspan="4">Nenhuma matéria cadastrada até o momento. <button class="btn-out" data-retry-mats>🔄 Tentar novamente</button></td></tr>'; return; }
         renderMats();
       } catch (e) {
         const hint = (e && e.code === '42P01') ? ' Rode o arquivo <b>noticias.sql</b> no Supabase.' : '';
-        tbodyM.innerHTML = '<tr><td colspan="4">⚠️ Não foi possível carregar as matérias: ' + esc((e && e.message) || e) + hint + '</td></tr>';
+        tbodyM.innerHTML = '<tr><td colspan="4">⚠️ Não foi possível carregar as matérias: ' + esc((e && e.message) || e) + hint + ' <button class="btn-out" data-retry-mats>🔄 Tentar novamente</button></td></tr>';
       }
     }
 
@@ -255,6 +332,7 @@
     }
 
     tbodyM.addEventListener('click', async (e) => {
+      if (e.target.closest('[data-retry-mats]')) { carregarMats(); return; }
       const b = e.target.closest('button[data-mact]');
       if (!b) return;
       if (b.dataset.mact === 'excluir' && !confirm('Excluir esta matéria permanentemente?')) return;
@@ -285,35 +363,8 @@
       if (t.dataset.tab === 'ads') loadBanners();
     }));
 
-    // ---- Banners & Anúncios (upsert por posicao) ----
-    const SLOTS = [
-      { id: 'topo_principal', label: 'Topo principal (Header 720×90)' },
-      { id: 'lateral_topo', label: 'Sidebar direita (300×250)' },
-      { id: 'entre_materias', label: 'In-feed (entre matérias)' },
-      { id: 'rodape', label: 'Rodapé (Footer full-width)' }
-    ];
+    // ---- Banners & Anúncios: formulários ESTÁTICOS no HTML; JS só preenche e salva ----
     let adsLoaded = false;
-
-    function slotCard(s) {
-      return `<div class="form-card" style="margin-bottom:12px" data-slot="${s.id}">
-        <h3 style="font-size:.95rem;margin-bottom:10px">${s.label} <span class="role-tag">${s.id}</span></h3>
-        <div class="form-row">
-          <div class="field"><label>Tipo</label><select data-f="tipo">
-            <option value="manual">Banner manual (PNG/GIF)</option>
-            <option value="adsense">Google AdSense</option>
-            <option value="desativado">Desativado</option>
-          </select></div>
-          <div class="field"><label>Link de destino (nova aba)</label><input data-f="link" type="url" placeholder="https://anunciante.com" /></div>
-        </div>
-        <div class="field" data-wrap="manual"><label>Imagem — upload ou URL</label>
-          <input data-f="file" type="file" accept="image/*" />
-          <input data-f="url" type="url" placeholder="https://..." style="margin-top:6px" />
-          <img data-preview alt="Prévia do banner" style="width:100%;height:auto;max-height:160px;object-fit:cover;object-position:center;border-radius:8px;margin-top:8px;background:#020617" />
-        </div>
-        <div class="field" data-wrap="adsense" hidden><label>Código AdSense (&lt;script&gt;)</label><textarea data-f="script" rows="3" placeholder="Cole aqui o código do bloco de anúncios"></textarea></div>
-        <button class="btn-ok" data-save="${s.id}">💾 Salvar Anúncio</button>
-      </div>`;
-    }
 
     function toggleSlot(card) {
       const t = card.querySelector('[data-f="tipo"]').value;
@@ -321,23 +372,20 @@
       card.querySelector('[data-wrap="adsense"]').hidden = t !== 'adsense';
     }
 
+    // Previews e alternância Manual/AdSense dos formulários estáticos (síncrono, sem await)
+    document.querySelectorAll('#adsSlots [data-slot]').forEach((card) => {
+      card.querySelector('[data-f="tipo"]').addEventListener('change', () => toggleSlot(card));
+      card.querySelector('[data-f="url"]').addEventListener('input', (e) => { card.querySelector('[data-preview]').src = e.target.value; });
+      card.querySelector('[data-f="file"]').addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        if (f) card.querySelector('[data-preview]').src = URL.createObjectURL(f);
+      });
+    });
+
     async function loadBanners() {
-      const box = document.getElementById('adsSlots');
-      if (!box) return;
-      // 1) Render IMEDIATO dos 4 formulários (nunca bloqueia a UI)
-      if (!adsLoaded) {
-        adsLoaded = true;
-        box.innerHTML = SLOTS.map(slotCard).join('');
-        box.querySelectorAll('[data-slot]').forEach((card) => {
-          card.querySelector('[data-f="tipo"]').addEventListener('change', () => toggleSlot(card));
-          card.querySelector('[data-f="url"]').addEventListener('input', (e) => { card.querySelector('[data-preview]').src = e.target.value; });
-          card.querySelector('[data-f="file"]').addEventListener('change', (e) => {
-            const f = e.target.files[0];
-            if (f) card.querySelector('[data-preview]').src = URL.createObjectURL(f);
-          });
-        });
-      }
-      // 2) Preenchimento com timeout de 3s: falhou/vazio = mantém em branco
+      if (adsLoaded) return;
+      adsLoaded = true;
+      // Só PREENCHE o que já está no HTML: timeout 3s; falhou/vazio = segue em branco
       try {
         const query = supabase.from('banners').select('*');
         const { data, error } = await Promise.race([
@@ -346,8 +394,9 @@
         ]);
         if (error) throw error;
         const rows = data || [];
+        const box = document.getElementById('adsSlots');
         rows.forEach((b) => {
-          const card = box.querySelector(`[data-slot="${b.posicao}"]`);
+          const card = box && box.querySelector(`[data-slot="${b.posicao}"]`);
           if (!card) return;
           card.querySelector('[data-f="tipo"]').value = b.tipo || 'manual';
           card.querySelector('[data-f="link"]').value = b.link_destino || '';
@@ -406,11 +455,10 @@
       }
     });
 
-    // Pré-render dos formulários de banners (síncrono; busca preenche depois)
+    // Init: banners (HTML estático no DOM) + dados das tabelas
     loadBanners();
     await carregar();
     await carregarMats();
-    });
 
     document.querySelectorAll('#usersFilter button').forEach((t) => t.addEventListener('click', () => {
       document.querySelectorAll('#usersFilter button').forEach((x) => x.setAttribute('aria-selected', 'false'));
@@ -423,8 +471,6 @@
       await supabase.auth.signOut();
       window.location.href = '/login';
     });
-
-    await carregar();
   </script>
 </body>
 </html>
