@@ -3,6 +3,10 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/dono", "destination": "/administrador" },
+    { "source": "/criar-materia", "destination": "/criar-materia" },
+    { "source": "/categoria/:slug", "destination": "/categoria" },
+    { "source": "/sobre", "destination": "/pagina?slug=sobre" },
+    { "source": "/expediente", "destination": "/pagina?slug=expediente" },
     { "source": "/noticias/:categoria/:slug", "destination": "/single" },
     { "source": "/noticias/:slug", "destination": "/single" }
   ]
