@@ -52,8 +52,24 @@ function renderNoticia(n) {
   if (/<(p|h2|h3|blockquote|ul|ol)[\s>]/.test(n.corpo || '')) {
     const doc = new DOMParser().parseFromString(n.corpo, 'text/html');
     doc.querySelectorAll('script,style,object,embed').forEach((el) => el.remove());
+    // Imagens do Quill: lazy + async + sem estouro (anti-CLS no 4G/5G)
+    doc.querySelectorAll('img').forEach((im) => {
+      im.setAttribute('loading', 'lazy');
+      im.setAttribute('decoding', 'async');
+      if (!im.getAttribute('width') || !im.getAttribute('height')) {
+        im.setAttribute('style', 'max-width:100%;height:auto;border-radius:10px');
+      }
+    });
+    // YouTube permitido (inclui youtube-nocookie) em wrapper 16:9 responsivo
     doc.querySelectorAll('iframe').forEach((f) => {
-      if (!/^https:\/\/(www\.youtube\.com|youtube-nocookie\.com|youtu\.be)\//.test(f.src)) f.remove();
+      if (!/^https:\/\/(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.be)\//.test(f.src || '')) { f.remove(); return; }
+      f.setAttribute('loading', 'lazy');
+      f.setAttribute('title', 'Vídeo da matéria');
+      const wrap = doc.createElement('div');
+      wrap.setAttribute('style', 'position:relative;aspect-ratio:16/9;margin:16px 0');
+      f.setAttribute('style', 'position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:10px');
+      f.parentNode.insertBefore(wrap, f);
+      wrap.appendChild(f);
     });
     doc.querySelectorAll('*').forEach((el) => {
       [...el.attributes].forEach((a) => { if (/^on/i.test(a.name)) el.removeAttribute(a.name); });

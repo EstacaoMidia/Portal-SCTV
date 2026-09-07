@@ -2,6 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/dono", "destination": "/administrador" },
     { "source": "/criar-materia", "destination": "/criar-materia" },
     { "source": "/categoria/:slug", "destination": "/categoria" },
