@@ -2,14 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/login", "destination": "/login.html" },
-    { "source": "/cadastro", "destination": "/cadastro.html" },
-    { "source": "/painel", "destination": "/painel.html" },
-    { "source": "/administrador", "destination": "/administrador.html" },
-    { "source": "/dono", "destination": "/administrador.html" },
-    { "source": "/programacao", "destination": "/programacao.html" },
-    { "source": "/contato", "destination": "/contato.html" },
-    { "source": "/noticias/:categoria/:slug", "destination": "/single.html" },
-    { "source": "/noticias/:slug", "destination": "/single.html" }
+    { "source": "/dono", "destination": "/administrador" },
+    { "source": "/noticias/:categoria/:slug", "destination": "/single" },
+    { "source": "/noticias/:slug", "destination": "/single" }
   ]
 }
