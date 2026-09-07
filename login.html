@@ -146,8 +146,14 @@
         say('Sua solicitação de acesso foi recusada.', false);
         await supabase.auth.signOut();
       } else {
-        // Redireciona para o painel de correspondente ou admin
-        window.location.href = profile.role === 'admin' ? '/administrador' : '/painel';
+        // Redirecionamento inteligente: dono/infra gerencia usuários;
+        // Redação (admin) cai direto no editor para publicar.
+        const OWNER_EMAIL = 'sctvofc@gmail.com';
+        if (profile.role === 'admin') {
+          window.location.href = email.toLowerCase() === OWNER_EMAIL ? '/administrador' : '/criar-materia';
+        } else {
+          window.location.href = '/painel';
+        }
         return;
       }
 
