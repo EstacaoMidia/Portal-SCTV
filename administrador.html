@@ -21,6 +21,8 @@
     .st-pendente{background:rgba(234,179,8,.15);color:var(--gold-soft);border:1px solid rgba(234,179,8,.5)}
     .st-aprovado{background:rgba(22,163,74,.15);color:#86EFAC;border:1px solid rgba(22,163,74,.5)}
     .st-rejeitado{background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.5)}
+    .st-rascunho{background:rgba(148,163,184,.12);color:#CBD5E1;border:1px solid rgba(148,163,184,.5)}
+    .st-publicada{background:rgba(22,163,74,.15);color:#86EFAC;border:1px solid rgba(22,163,74,.5)}
     .role-tag{font-size:.75rem;color:var(--muted)}
     .row-actions{display:flex;gap:6px;flex-wrap:wrap}
     .btn-ok,.btn-no,.btn-out{border:0;border-radius:8px;padding:8px 12px;font-weight:800;font-size:.78rem;cursor:pointer}
@@ -63,18 +65,44 @@
 
   <main id="conteudo" class="container legal-layout">
     <div class="page-hero" style="margin-top:18px">
-      <span class="page-hero__kicker">👑 Painel do dono • acesso restrito</span>
-      <h1>Aprovar correspondentes</h1>
+      <span class="page-hero__kicker">👑 Painel do administrador • acesso restrito</span>
+      <h1>Administração SCTV</h1>
       <p id="ownerLine">Verificando permissão...</p>
     </div>
 
-    <section class="form-card" aria-label="Solicitações de acesso">
+    <div class="filter-tabs" role="tablist" aria-label="Navegação do painel" style="margin-bottom:14px">
+      <button data-tab="materias" role="tab" aria-selected="true">📝 Gerenciar Matérias</button>
+      <button data-tab="nova" role="tab" aria-selected="false">➕ Nova Matéria</button>
+      <button data-tab="users" role="tab" aria-selected="false">👥 Aprovar Correspondentes <span id="badgePend"></span></button>
+    </div>
+
+    <section class="form-card" id="panel-materias" aria-label="Gerenciar matérias">
+      <div class="stat-row" aria-label="Resumo de matérias">
+        <div class="stat"><b id="mTotal">–</b><span>Matérias</span></div>
+        <div class="stat"><b id="mPend">–</b><span>Pendentes</span></div>
+        <div class="stat"><b id="mPub">–</b><span>Publicadas</span></div>
+      </div>
+      <div class="filter-tabs" id="matFilter" role="tablist" aria-label="Filtrar matérias">
+        <button data-mf="todas" role="tab" aria-selected="true">Todas</button>
+        <button data-mf="pendente" role="tab" aria-selected="false">Pendentes</button>
+        <button data-mf="publicada" role="tab" aria-selected="false">Publicadas</button>
+        <button data-mf="rascunho" role="tab" aria-selected="false">Rascunhos</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="kit-table" aria-label="Matérias">
+          <thead><tr><th>Matéria</th><th>Autor</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="tbodyMats"><tr><td colspan="4">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="form-card" id="panel-users" hidden aria-label="Solicitações de acesso">
       <div class="stat-row" aria-label="Resumo">
         <div class="stat"><b id="cTotal">–</b><span>Total</span></div>
         <div class="stat"><b id="cPend">–</b><span>Pendentes</span></div>
         <div class="stat"><b id="cAprov">–</b><span>Aprovados</span></div>
       </div>
-      <div class="filter-tabs" role="tablist" aria-label="Filtrar por status">
+      <div class="filter-tabs" id="usersFilter" role="tablist" aria-label="Filtrar por status">
         <button data-f="todos" role="tab" aria-selected="true">Todos</button>
         <button data-f="pendente" role="tab" aria-selected="false">Pendentes</button>
         <button data-f="aprovado" role="tab" aria-selected="false">Aprovados</button>
@@ -86,8 +114,8 @@
           <tbody id="tbodyPerfis"><tr><td colspan="4">Carregando...</td></tr></tbody>
         </table>
       </div>
-      <p id="adminMsg" class="form-ok" role="status" aria-live="polite" hidden></p>
     </section>
+    <p id="adminMsg" class="form-ok" role="status" aria-live="polite" hidden style="margin-top:12px"></p>
   </main>
 
   <script src="assets/js/main.js" defer></script>
@@ -110,7 +138,7 @@
 
     // Guarda centralizada: só admin aprovado entra (redireciona p/ /login)
     const me = await requireAuth('admin');
-    ownerLine.innerHTML = `Logado como <strong>${esc(me.nome)}</strong> (dono). Gerencie abaixo quem entra no quadro.`;
+    ownerLine.innerHTML = `Logado como <strong>${esc(me.nome)}</strong> (dono). Gerencie matérias e o quadro abaixo.`;
 
     async function carregar() {
       const { data, error } = await supabase.from('profiles').select('id, nome, email, role, status, created_at').order('created_at', { ascending: false });
@@ -118,6 +146,8 @@
       all = data;
       document.getElementById('cTotal').textContent = all.length;
       document.getElementById('cPend').textContent = all.filter((p) => p.status === 'pendente').length;
+      const nPend = all.filter((p) => p.status === 'pendente').length;
+      document.getElementById('badgePend').textContent = nPend ? `(${nPend})` : '';
       document.getElementById('cAprov').textContent = all.filter((p) => p.status === 'aprovado').length;
       render();
     }
@@ -143,11 +173,75 @@
       const { error } = await supabase.from('profiles').update({ status: b.dataset.act }).eq('id', b.dataset.id);
       if (error) { say('Erro: ' + error.message, false); b.disabled = false; return; }
       say(`Perfil ${b.dataset.act === 'aprovado' ? 'APROVADO ✅' : 'RECUSADO ⛔'} com sucesso.`, true);
-      await carregar();
+    // ---- Gerenciar matérias (pendentes + todas) ----
+    let mats = [];
+    let mfiltro = 'todas';
+    const tbodyM = document.getElementById('tbodyMats');
+
+    async function carregarMats() {
+      const { data, error } = await supabase.from('noticias').select('id, slug, categoria, titulo, autor_nome, status, created_at').order('created_at', { ascending: false }).limit(100);
+      if (error) { tbodyM.innerHTML = '<tr><td colspan="4">Erro: ' + esc(error.message) + '</td></tr>'; return; }
+      mats = data || [];
+      document.getElementById('mTotal').textContent = mats.length;
+      document.getElementById('mPend').textContent = mats.filter((m) => m.status === 'pendente').length;
+      document.getElementById('mPub').textContent = mats.filter((m) => m.status === 'publicada').length;
+      renderMats();
+    }
+
+    function renderMats() {
+      const rows = mats.filter((m) => mfiltro === 'todas' || m.status === mfiltro);
+      if (!rows.length) { tbodyM.innerHTML = '<tr><td colspan="4">Nenhuma matéria neste filtro.</td></tr>'; return; }
+      tbodyM.innerHTML = rows.map((m) => {
+        const acts = [];
+        if (m.status === 'publicada') acts.push(`<a class="btn-ok" style="text-decoration:none" href="/noticias/${esc(m.categoria)}/${esc(m.slug)}" target="_blank" rel="noopener">Abrir</a>`);
+        if (m.status === 'pendente') acts.push(`<button class="btn-ok" data-mact="publicada" data-id="${m.id}">Aprovar</button>`);
+        acts.push(`<a class="btn-out" style="text-decoration:none;color:#fff" href="/criar-materia?edit=${m.id}">Editar</a>`);
+        if (m.status === 'pendente') acts.push(`<button class="btn-out" data-mact="rascunho" data-id="${m.id}">Devolver</button>`);
+        acts.push(`<button class="btn-no" data-mact="excluir" data-id="${m.id}">Excluir</button>`);
+        return `<tr>
+          <td><b>${esc(m.titulo)}</b><br><span class="role-tag">/${esc(m.categoria)}/${esc(m.slug)}</span></td>
+          <td><span class="role-tag">${esc(m.autor_nome || '—')}</span></td>
+          <td><span class="st st-${esc(m.status)}">${esc(m.status)}</span></td>
+          <td><div class="row-actions">${acts.join('')}</div></td>
+        </tr>`;
+      }).join('');
+    }
+
+    tbodyM.addEventListener('click', async (e) => {
+      const b = e.target.closest('button[data-mact]');
+      if (!b) return;
+      if (b.dataset.mact === 'excluir' && !confirm('Excluir esta matéria permanentemente?')) return;
+      b.disabled = true;
+      let error;
+      if (b.dataset.mact === 'excluir') ({ error } = await supabase.from('noticias').delete().eq('id', b.dataset.id));
+      else ({ error } = await supabase.from('noticias').update({ status: b.dataset.mact }).eq('id', b.dataset.id));
+      if (error) { say('Erro: ' + error.message, false); b.disabled = false; return; }
+      say('Matéria atualizada ✅', true);
+      await carregarMats();
     });
 
-    document.querySelectorAll('.filter-tabs button').forEach((t) => t.addEventListener('click', () => {
-      document.querySelectorAll('.filter-tabs button').forEach((x) => x.setAttribute('aria-selected', 'false'));
+    document.querySelectorAll('#matFilter button').forEach((t) => t.addEventListener('click', () => {
+      document.querySelectorAll('#matFilter button').forEach((x) => x.setAttribute('aria-selected', 'false'));
+      t.setAttribute('aria-selected', 'true');
+      mfiltro = t.dataset.mf;
+      renderMats();
+    }));
+
+    // ---- Navegação do painel ----
+    document.querySelectorAll('[data-tab]').forEach((t) => t.addEventListener('click', () => {
+      if (t.dataset.tab === 'nova') { window.location.href = '/criar-materia'; return; }
+      document.querySelectorAll('[data-tab]').forEach((x) => x.setAttribute('aria-selected', 'false'));
+      t.setAttribute('aria-selected', 'true');
+      document.getElementById('panel-materias').hidden = t.dataset.tab !== 'materias';
+      document.getElementById('panel-users').hidden = t.dataset.tab !== 'users';
+    }));
+
+    await carregar();
+    await carregarMats();
+    });
+
+    document.querySelectorAll('#usersFilter button').forEach((t) => t.addEventListener('click', () => {
+      document.querySelectorAll('#usersFilter button').forEach((x) => x.setAttribute('aria-selected', 'false'));
       t.setAttribute('aria-selected', 'true');
       filtro = t.dataset.f;
       render();

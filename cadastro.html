@@ -116,6 +116,16 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('senha').value;
 
+      // Validação de e-mail: ASCII válido — barra acentos, ç e especiais
+      if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+        say(/[^ -~]/.test(email)
+          ? 'E-mail inválido: remova acentos, cedilha (ç) e caracteres especiais. Use apenas letras sem acento, números e os símbolos @ . - _'
+          : 'Digite um e-mail válido (ex: voce@email.com).', false);
+        btn.disabled = false;
+        btn.textContent = 'Solicitar Cadastro';
+        return;
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,

@@ -134,7 +134,9 @@
           <div class="btn-row">
             <button class="btn-submit btn-draft" type="button" id="btnRascunho">💾 Rascunho</button>
             <button class="btn-submit btn-pend" type="button" id="btnPendente">📨 Enviar p/ aprovação</button>
-            <button class="btn-submit" type="button" id="btnPublicar" hidden>🚀 Publicar agora</button>
+            <button class="btn-submit" type="button" id="btnPublicar" hidden>🚀 Publicar Notícia</button>
+            <button class="btn-submit" type="button" id="btnAtualizar" hidden>💾 Salvar alterações</button>
+            <button class="btn-submit" type="button" id="btnAprovarPub" hidden>✅ Aprovar e publicar</button>
           </div>
           <div class="form-ok" id="edOk" hidden role="status"></div>
         </form>
@@ -186,7 +188,11 @@
     const autorId = session.user.id;
     const isAdmin = me.role === 'admin';
     document.getElementById('autorLine').innerHTML = `Publicando como <strong>${me.nome}</strong> (${me.role}).`;
-    if (isAdmin) document.getElementById('btnPublicar').hidden = false;
+    // Regra por nível: admin publica direto; correspondente envia p/ aprovação
+    if (isAdmin) {
+      $('btnPublicar').hidden = false;
+      $('btnPendente').hidden = true;
+    }
 
     const $ = (id) => document.getElementById(id);
     const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -350,6 +356,83 @@
       btn.disabled = false;
     }
 
+    // ---- Modo edição (?edit=id): RLS permite admin (tudo) e autor (próprio) ----
+    const editId = new URLSearchParams(location.search).get('edit');
+    let editRow = null;
+    if (editId) {
+      const { data, error } = await supabase.from('noticias').select('*').eq('id', editId).maybeSingle();
+      if (error || !data) {
+        const okBox = $('edOk');
+        okBox.hidden = false;
+        okBox.style.borderColor = 'rgba(239,68,68,.5)';
+        okBox.textContent = 'Matéria não encontrada ou sem permissão de edição.';
+      } else {
+        editRow = data;
+        slugManual = true;
+        document.querySelector('.page-hero h1').textContent = 'Editar matéria';
+        $('f-cat').value = data.categoria || '';
+        $('f-slug').value = data.slug || '';
+        $('f-titulo').value = data.titulo || '';
+        $('f-dek').value = data.linha_fina || '';
+        $('f-capa-url').value = data.capa_url || '';
+        $('f-credito').value = data.capa_credito || '';
+        $('f-alt').value = data.alt_text || '';
+        $('f-video').value = data.video_youtube || '';
+        $('f-galeria').value = data.galeria || '';
+        $('f-tags').value = data.tags || '';
+        $('f-kw').value = data.keyword_foco || '';
+        $('f-mtitle').value = data.meta_title || '';
+        $('f-mdesc').value = data.meta_description || '';
+        $('f-og').value = data.og_image || '';
+        $('f-cta').value = data.cta_tipo || 'nenhum';
+        if (data.capa_url) setCover(data.capa_url);
+        if (data.corpo) quill.root.innerHTML = data.corpo;
+        $('btnRascunho').hidden = true;
+        $('btnPendente').hidden = true;
+        $('btnPublicar').hidden = true;
+        $('btnAtualizar').hidden = false;
+        if (isAdmin && data.status === 'pendente') $('btnAprovarPub').hidden = false;
+        analyze();
+      }
+    }
+
+    async function atualizar(btn, forceStatus) {
+      const v = coletar();
+      if (!v || !editRow) return;
+      btn.disabled = true;
+      const okBox = $('edOk');
+      try {
+        const file = $('f-capa-file').files[0];
+        if (file) {
+          const ext = file.name.split('.').pop().toLowerCase();
+          const path = `${autorId}/${Date.now()}.${ext}`;
+          const { error: upErr } = await supabase.storage.from('capas').upload(path, file, { upsert: false });
+          if (upErr) throw upErr;
+          v.capa_url = supabase.storage.from('capas').getPublicUrl(path).data.publicUrl;
+        }
+        let slug = v.slug, n = 2;
+        for (;;) {
+          const { data } = await supabase.from('noticias').select('id').eq('slug', slug).maybeSingle();
+          if (!data || data.id === editRow.id) break;
+          slug = `${v.slug}-${n++}`;
+        }
+        const payload = { ...v, slug };
+        if (forceStatus) payload.status = forceStatus;
+        const { error } = await supabase.from('noticias').update(payload).eq('id', editRow.id);
+        if (error) throw error;
+        okBox.hidden = false;
+        okBox.style.borderColor = 'rgba(22,163,74,.5)';
+        okBox.innerHTML = `✅ <strong>Alterações salvas!</strong> Ver em <a href="/noticias/${v.categoria}/${slug}" style="color:var(--gold)">/noticias/${v.categoria}/${slug}</a>`;
+      } catch (e) {
+        okBox.hidden = false;
+        okBox.style.borderColor = 'rgba(239,68,68,.5)';
+        okBox.textContent = 'Erro: ' + e.message;
+      }
+      btn.disabled = false;
+    }
+
+    $('btnAtualizar').addEventListener('click', (e) => atualizar(e.target, null));
+    $('btnAprovarPub').addEventListener('click', (e) => atualizar(e.target, 'publicada'));
     $('btnRascunho').addEventListener('click', (e) => enviar('rascunho', e.target));
     $('btnPendente').addEventListener('click', (e) => enviar('pendente', e.target));
     $('btnPublicar').addEventListener('click', (e) => enviar('publicada', e.target));
