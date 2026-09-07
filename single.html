@@ -363,6 +363,14 @@
       </section>
     </article>
 
+    <!-- Rota /noticias/* sem matéria correspondente (renderizada pelo router.js) -->
+    <section id="noticiaNaoEncontrada" class="form-card" hidden aria-label="Notícia não encontrada" style="align-self:start">
+      <h2 style="margin:0;font-size:1.2rem">🔍 Notícia não encontrada</h2>
+      <p style="margin:10px 0;font-size:.9rem;color:#CBD5E1">A URL <strong data-slug style="color:var(--gold-soft)"></strong> não corresponde a nenhuma matéria publicada no portal SCTV.</p>
+      <p style="margin:10px 0;font-size:.9rem;color:#CBD5E1">Enquanto nossa redação apura, que tal acompanhar <a href="/#ao-vivo" style="color:var(--gold)">o ao vivo</a> ou entrar no <a href="https://chat.whatsapp.com/D86YCp0sfvZ5vOKAxO6Evk" target="_blank" rel="noopener" style="color:var(--gold)">Grupo VIP do WhatsApp</a>?</p>
+      <div class="share-bottom__row"><a class="share-btn share--wa" href="/">🏠 Página inicial</a><a class="share-btn" href="/single.html" style="text-decoration:none">📰 Matéria em destaque</a></div>
+    </section>
+
     <!-- Sidebar -->
     <aside class="sidebar single-sidebar" aria-label="Barra lateral">
       <div class="widget widget--ad" role="complementary" aria-label="Anúncio 300 por 250">
@@ -424,5 +432,6 @@
 
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/single.js" defer></script>
+  <script src="assets/js/router.js" type="module"></script>
 </body>
 </html>

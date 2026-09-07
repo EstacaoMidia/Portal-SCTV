@@ -93,6 +93,7 @@
   <script src="assets/js/main.js" defer></script>
   <script type="module">
     import { supabase } from './assets/js/supabaseClient.js';
+    import { requireAuth } from './assets/js/guard.js';
 
     const tbody = document.getElementById('tbodyPerfis');
     const msg = document.getElementById('adminMsg');
@@ -107,16 +108,8 @@
     }
     const esc = (s) => String(s ?? '').replace(/[<>&"]/g, (m) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[m]));
 
-    // Guarda: só admin aprovado entra
-    const { data: sess } = await supabase.auth.getSession();
-    if (!sess.session) { window.location.href = '/login'; throw new Error('no-session'); }
-
-    const { data: me } = await supabase.from('profiles').select('nome, role, status').eq('id', sess.session.user.id).single();
-    if (!me || me.role !== 'admin' || me.status !== 'aprovado') {
-      await supabase.auth.signOut();
-      window.location.href = '/login';
-      throw new Error('forbidden');
-    }
+    // Guarda centralizada: só admin aprovado entra (redireciona p/ /login)
+    const me = await requireAuth('admin');
     ownerLine.innerHTML = `Logado como <strong>${esc(me.nome)}</strong> (dono). Gerencie abaixo quem entra no quadro.`;
 
     async function carregar() {

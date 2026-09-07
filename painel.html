@@ -55,23 +55,11 @@
   <script src="assets/js/main.js" defer></script>
   <script type="module">
     import { supabase } from './assets/js/supabaseClient.js';
+    import { requireAuth } from './assets/js/guard.js';
 
     const esc = (s) => String(s ?? '').replace(/[<>&"]/g, (m) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[m]));
 
-    const { data: sess } = await supabase.auth.getSession();
-    if (!sess.session) { window.location.href = '/login'; throw new Error('no-session'); }
-
-    const { data: me, error } = await supabase.from('profiles').select('nome, email, role, status, created_at').eq('id', sess.session.user.id).single();
-    if (error || !me) {
-      await supabase.auth.signOut();
-      window.location.href = '/login';
-      throw new Error('no-profile');
-    }
-    if (me.status !== 'aprovado') {
-      await supabase.auth.signOut();
-      window.location.href = '/login';
-      throw new Error('not-approved');
-    }
+    const me = await requireAuth('correspondente');
 
     document.getElementById('boasVindas').textContent = `Bem-vindo(a), ${me.nome.split(' ')[0]}! 🎙️`;
     document.getElementById('perfilLinha').innerHTML = `Acesso liberado como <strong>correspondente SCTV</strong>.`;

@@ -8,6 +8,8 @@
     { "source": "/administrador", "destination": "/administrador.html" },
     { "source": "/dono", "destination": "/administrador.html" },
     { "source": "/programacao", "destination": "/programacao.html" },
-    { "source": "/contato", "destination": "/contato.html" }
+    { "source": "/contato", "destination": "/contato.html" },
+    { "source": "/noticias/:categoria/:slug", "destination": "/single.html" },
+    { "source": "/noticias/:slug", "destination": "/single.html" }
   ]
 }
