@@ -189,9 +189,10 @@
     const isAdmin = me.role === 'admin';
     document.getElementById('autorLine').innerHTML = `Publicando como <strong>${me.nome}</strong> (${me.role}).`;
     // Regra por nível: admin publica direto; correspondente envia p/ aprovação
+    // (getElementById proposital: $ só é declarado abaixo — evita TDZ)
     if (isAdmin) {
-      $('btnPublicar').hidden = false;
-      $('btnPendente').hidden = true;
+      document.getElementById('btnPublicar').hidden = false;
+      document.getElementById('btnPendente').hidden = true;
     }
 
     const $ = (id) => document.getElementById(id);
