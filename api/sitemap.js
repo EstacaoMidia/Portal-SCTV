@@ -38,7 +38,7 @@ export default async function handler(req, res) {
   const arts = rows
     .filter((n) => n.slug && n.categoria)
     .map(
-      (n) => `<url><loc>${SITE}/noticias/${x(n.categoria)}/${x(n.slug)}</loc><lastmod>${String(n.updated_at || TODAY).slice(0, 10)}</lastmod><changefreq>hourly</changefreq><priority>0.8</priority></url>`
+      (n) => `<url><loc>${SITE}/${x(n.slug)}</loc><lastmod>${String(n.updated_at || TODAY).slice(0, 10)}</lastmod><changefreq>hourly</changefreq><priority>0.8</priority></url>`
     )
     .join('');
 

@@ -4,12 +4,14 @@
    og:image, og:url, canonical e <title> injetados da tabela `noticias`
    (status=publicada). Crawlers não executam JS — por isso o patch é no edge. */
 
-export const config = { matcher: '/noticias/:path*' };
+export const config = { matcher: ['/noticias/:path*', '/:slug'] };
 
 const SUPABASE_URL = 'https://pqmurfhshztlrztqjqpk.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_-XaLOQn6arnE_PVhCiDGzQ_By2VmRc_';
 const SITE = 'https://sctvofc.com.br';
 const BOT_RE = /whatsapp|facebookexternalhit|twitterbot|linkedinbot|telegrambot|discordbot|slackbot|embedly|quora|pinterest/i;
+// Páginas reais: pula a consulta (o rewrite genérico só entrega shell sem arquivo)
+const RESERVED = new Set(['single', 'login', 'cadastro', 'painel', 'administrador', 'criar-materia', 'categoria', 'pagina', 'programacao', 'contato', 'sobre', 'expediente', 'dono', '404']);
 
 const attr = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
@@ -19,6 +21,7 @@ export default async function middleware(req) {
 
   const url = new URL(req.url);
   const slug = decodeURIComponent(url.pathname.replace(/\/+$/, '').split('/').pop() || '');
+  if (!slug || RESERVED.has(slug.toLowerCase())) return undefined;
 
   let row = null;
   try {
@@ -39,7 +42,7 @@ export default async function middleware(req) {
     return undefined;
   }
 
-  const canon = `${SITE}/noticias/${row.categoria}/${row.slug}`;
+  const canon = `${SITE}/${row.slug}`;
   const title = attr(row.titulo);
   const desc = attr((row.linha_fina || '').slice(0, 200));
   const img = attr(row.og_image || row.capa_url || `${SITE}/assets/img/logo-sctv.webp`);

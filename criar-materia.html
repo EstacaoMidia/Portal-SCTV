@@ -346,7 +346,7 @@
         okBox.hidden = false;
         okBox.style.borderColor = 'rgba(22,163,74,.5)';
         okBox.innerHTML = status === 'publicada'
-          ? `✅ <strong>Publicada!</strong> Ver em <a href="/noticias/${v.categoria}/${slug}" style="color:var(--gold)">/noticias/${v.categoria}/${slug}</a>`
+          ? `✅ <strong>Publicada!</strong> Ver em <a href="/${slug}" style="color:var(--gold)">/${slug}</a>`
           : `✅ <strong>${nomes[status]}!</strong> (slug: ${slug})`;
         if (status !== 'rascunho') document.getElementById('formMateria').reset();
       } catch (e) {
@@ -423,7 +423,7 @@
         if (error) throw error;
         okBox.hidden = false;
         okBox.style.borderColor = 'rgba(22,163,74,.5)';
-        okBox.innerHTML = `✅ <strong>Alterações salvas!</strong> Ver em <a href="/noticias/${v.categoria}/${slug}" style="color:var(--gold)">/noticias/${v.categoria}/${slug}</a>`;
+        okBox.innerHTML = `✅ <strong>Alterações salvas!</strong> Ver em <a href="/${slug}" style="color:var(--gold)">/${slug}</a>`;
       } catch (e) {
         okBox.hidden = false;
         okBox.style.borderColor = 'rgba(239,68,68,.5)';

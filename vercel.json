@@ -9,6 +9,7 @@
     { "source": "/sobre", "destination": "/pagina?slug=sobre" },
     { "source": "/expediente", "destination": "/pagina?slug=expediente" },
     { "source": "/noticias/:categoria/:slug", "destination": "/single" },
-    { "source": "/noticias/:slug", "destination": "/single" }
+    { "source": "/noticias/:slug", "destination": "/single" },
+    { "source": "/:slug", "destination": "/single" }
   ]
 }

@@ -127,15 +127,49 @@ function renderNotFound(categoria, slug) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Slugs de páginas reais: nunca são matéria (o rewrite genérico só cai aqui sem arquivo)
+const RESERVED = new Set(['single', 'login', 'cadastro', 'painel', 'administrador', 'criar-materia', 'categoria', 'pagina', 'programacao', 'contato', 'sobre', 'expediente', 'dono', '404']);
+
+/* Canonical enxuto (/:slug) injetado no <head> para a matéria dinâmica. */
+function setCanonical(shortPath) {
+  const href = `https://sctvofc.com.br${shortPath}`;
+  document.querySelectorAll('link[rel="canonical"]').forEach((l) => l.setAttribute('href', href));
+  const og = document.querySelector('meta[property="og:url"]');
+  if (og) og.setAttribute('content', href);
+}
+
 async function route() {
   const path = norm(window.location.pathname);
-  if (!path.startsWith('/noticias/')) return; // fora do escopo: nada a fazer
+  if (path === '/single' || path === '/') return; // template e home: nada a fazer
   if (path === CANONICAL_PATH) return; // matéria-modelo: render estático (LCP + SEO intactos)
 
-  const parsed = parseNoticia(path);
-  if (!parsed) return;
-  const row = await fetchNoticia(parsed.slug);
-  const apply = () => (row ? renderNoticia(row) : renderNotFound(parsed.categoria, parsed.slug));
+  let slug = null;
+  let categoria = null;
+  if (path === '/noticias' || path.startsWith('/noticias/')) {
+    const parsed = parseNoticia(path);
+    if (!parsed) { renderNotFoundDeferred(null, null); return; }
+    slug = parsed.slug;
+    categoria = parsed.categoria;
+  } else {
+    const m = path.match(/^\/([^/]+)$/);
+    if (!m) return;
+    slug = decodeURIComponent(m[1]);
+    if (RESERVED.has(slug.toLowerCase())) return;
+  }
+  const row = await fetchNoticia(slug);
+  const apply = () => {
+    if (row) { renderNoticia(row); setCanonical(`/${row.slug}`); }
+    else renderNotFound(categoria, slug);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply, { once: true });
+  } else {
+    apply();
+  }
+}
+
+function renderNotFoundDeferred(categoria, slug) {
+  const apply = () => renderNotFound(categoria, slug);
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', apply, { once: true });
   } else {
