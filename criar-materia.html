@@ -3,31 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nova Matéria | SCTV (restrito)</title>
-  <meta name="description" content="Editor restrito SCTV: criar matéria com SEO, capa e publicação." />
+  <title>Editor Premium de Matérias | SCTV (restrito)</title>
+  <meta name="description" content="Editor premium SCTV: rich text, SEO viral estilo Rank Math e publicação." />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#0F172A" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="icon" type="image/webp" href="assets/img/logo-sctv.webp" />
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/pages.css" />
   <style>
-    .editor-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;margin:16px auto;align-items:start}
-    .preview{position:sticky;top:150px}
-    .preview__cover{width:100%;height:auto;aspect-ratio:1200/675;object-fit:cover;border-radius:10px;background:#020617}
+    .ed-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;margin:16px auto;align-items:start}
+    .seo-side{position:sticky;top:150px;display:flex;flex-direction:column;gap:14px}
+    .seo-card{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .seo-card h3{font-family:var(--font-display);font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-soft);margin-bottom:10px}
+    .score-wrap{display:flex;align-items:center;gap:12px}
+    .score-num{font-family:var(--font-display);font-weight:900;font-size:2rem}
+    .score-bar{flex:1;height:10px;background:#020617;border-radius:99px;overflow:hidden}
+    .score-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#EF4444,#EAB308,#16A34A);transition:width .3s}
+    .check-list-seo{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:.8rem;margin-top:10px}
+    .check-list-seo li::before{content:'○ ';color:var(--muted)}
+    .check-list-seo li.ok::before{content:'● ';color:#16A34A}
+    .check-list-seo li.ok{color:#E2E8F0}
+    .check-list-seo li{color:var(--muted)}
+    /* Google snippet */
+    .g-snippet{background:#fff;border-radius:10px;padding:12px;color:#202124}
+    .g-snippet .g-url{font-size:.75rem;color:#202124}
+    .g-snippet .g-title{font-size:1.05rem;color:#1a0dab;line-height:1.3;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .g-snippet .g-desc{font-size:.82rem;color:#4d5156;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    /* WhatsApp card */
+    .wa-preview{background:#0b141a;border-radius:10px;padding:14px}
+    .wa-bubble{background:#005c4b;border-radius:0 10px 10px 10px;padding:8px;max-width:300px}
+    .wa-bubble img{width:100%;height:auto;aspect-ratio:1200/675;object-fit:cover;border-radius:6px;background:#06281f}
+    .wa-bubble strong{display:block;font-size:.8rem;color:#fff;margin-top:6px}
+    .wa-bubble small{font-size:.7rem;color:#aebac1}
+    .wa-bubble span{font-size:.68rem;color:#8696a0}
+    /* Quill dark */
+    #editor{background:#020617;color:#E2E8F0;border:1px solid var(--line);border-radius:0 0 10px 10px;min-height:320px;font-size:.95rem}
+    .ql-toolbar.ql-snow{background:#0B1226;border:1px solid var(--line);border-radius:10px 10px 0 0}
+    .ql-toolbar.ql-snow .ql-stroke{stroke:#CBD5E1}
+    .ql-toolbar.ql-snow .ql-fill{fill:#CBD5E1}
+    .ql-toolbar.ql-snow .ql-picker{color:#CBD5E1}
+    .ql-toolbar.ql-snow button:hover .ql-stroke{stroke:var(--gold)}
+    .ql-snow .ql-editor blockquote{border-left:4px solid var(--gold);color:#CBD5E1}
+    .ql-snow .ql-editor a{color:var(--gold-soft)}
     .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
     .btn-draft{background:#0B1226;color:#fff;border:1px solid var(--gold)}
+    .btn-pend{background:#7c3aed;color:#fff;border:0}
     .char-count{font-size:.72rem;color:var(--muted);text-align:right}
-    @media(max-width:1024px){.editor-grid{grid-template-columns:1fr}.preview{position:static}}
+    .char-count.bad{color:#FCA5A5}.char-count.good{color:#86EFAC}
+    #coverPreview{width:100%;height:auto;aspect-ratio:1200/675;object-fit:cover;border-radius:10px;background:#020617;border:1px solid var(--line)}
+    @media(max-width:1024px){.ed-grid{grid-template-columns:1fr}.seo-side{position:static}}
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#formMateria">Pular para o editor</a>
+  <a class="skip-link" href="#f-titulo">Pular para o editor</a>
   <div class="topbar" role="complementary" aria-label="Barra utilitária">
     <div class="container topbar__inner">
       <div class="topbar__left">
@@ -47,17 +82,20 @@
 
   <main id="conteudo" class="container">
     <div class="page-hero" style="margin-top:18px">
-      <span class="page-hero__kicker">✍️ Editor restrito • SEO premium</span>
+      <span class="page-hero__kicker">✍️ Editor premium • SEO viral • rich text</span>
       <h1>Nova matéria</h1>
       <p id="autorLine">Verificando permissão...</p>
     </div>
 
-    <div class="editor-grid">
+    <div class="ed-grid">
+      <!-- ============ COLUNA: CONTEÚDO ============ -->
       <section class="form-card" aria-labelledby="edTitle">
-        <h2 id="edTitle">📝 Conteúdo</h2>
+        <h2 id="edTitle">📝 Conteúdo e retenção</h2>
         <form id="formMateria" novalidate>
+          <div class="field"><label for="f-titulo">Título principal (H1) * <span class="char-count" id="cTitulo">0 caracteres (ideal: 50–60)</span></label><input id="f-titulo" type="text" maxlength="120" placeholder="Gancho visual + curiosidade + Cujubim/RO se regional" required /><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label for="f-dek">Linha fina / subtítulo instigante *</label><textarea id="f-dek" rows="2" maxlength="220" placeholder="Resumo copywriting em 1–2 frases"></textarea><span class="err" aria-live="polite"></span></div>
           <div class="form-row">
-            <div class="field"><label for="f-cat">Editoria *</label>
+            <div class="field"><label for="f-cat">Categoria / editoria *</label>
               <select id="f-cat" required>
                 <option value="">Selecione...</option>
                 <option value="brasil">Brasil</option>
@@ -70,37 +108,75 @@
                 <option value="policial">Policial</option>
                 <option value="cujubim">Cujubim / RO</option>
               </select><span class="err" aria-live="polite"></span></div>
-            <div class="field"><label for="f-slug">Slug (URL) *</label><input id="f-slug" type="text" placeholder="ex: recorde-na-safra" required /><span class="err" aria-live="polite"></span></div>
+            <div class="field"><label for="f-cta">CTA de rodapé</label>
+              <select id="f-cta">
+                <option value="nenhum">Sem CTA</option>
+                <option value="vip">🚨 Grupo VIP do WhatsApp</option>
+                <option value="youtube">▶️ Inscreva-se no canal SCTV</option>
+                <option value="inscricao">📩 Inscrição / Newsletter</option>
+              </select></div>
           </div>
-          <div class="field"><label for="f-titulo">Título H1 (gatilho + Cujubim/RO quando regional) *</label><input id="f-titulo" type="text" maxlength="120" placeholder="Título de alto impacto" required /><span class="char-count" id="cTitulo">0/120</span><span class="err" aria-live="polite"></span></div>
-          <div class="field"><label for="f-dek">Linha fina (subtítulo SEO) *</label><textarea id="f-dek" rows="2" maxlength="220" placeholder="Resumo persuasivo em 1-2 frases"></textarea><span class="char-count" id="cDek">0/220</span><span class="err" aria-live="polite"></span></div>
-          <div class="field"><label for="f-capa-file">Foto de capa (upload 1200×675)</label><input id="f-capa-file" type="file" accept="image/*" /><span class="err" aria-live="polite"></span></div>
-          <div class="field"><label for="f-capa-url">...ou URL da imagem HD</label><input id="f-capa-url" type="url" placeholder="https://..." /><span class="err" aria-live="polite"></span></div>
-          <div class="field"><label for="f-credito">Legenda / crédito da foto</label><input id="f-credito" type="text" placeholder="Foto: Redação SCTV" /></div>
-          <div class="field"><label for="f-corpo">Corpo da matéria (parágrafos separados por linha em branco) *</label><textarea id="f-corpo" rows="12" placeholder="Lead com o essencial nos 10 primeiros segundos..."></textarea><span class="err" aria-live="polite"></span></div>
+          <div class="field"><label>Mídia de capa (1200×675)</label><img id="coverPreview" alt="Prévia da capa" width="1200" height="675" /></div>
           <div class="form-row">
-            <div class="field"><label for="f-tags">Tags (vírgula)</label><input id="f-tags" type="text" placeholder="Cujubim, Rondônia, SCTV" /></div>
-            <div class="field"><label for="f-kw">news_keywords</label><input id="f-kw" type="text" placeholder="Cujubim, Rondônia, Porto Velho" /></div>
+            <div class="field"><label for="f-capa-file">Upload de imagem</label><input id="f-capa-file" type="file" accept="image/*" /></div>
+            <div class="field"><label for="f-capa-url">...ou URL da imagem HD</label><input id="f-capa-url" type="url" placeholder="https://" /></div>
           </div>
+          <div class="form-row">
+            <div class="field"><label for="f-alt">Alt Text (SEO/acessibilidade) *</label><input id="f-alt" type="text" placeholder="Descreva a imagem em 1 frase" /></div>
+            <div class="field"><label for="f-credito">Crédito / fonte</label><input id="f-credito" type="text" placeholder="Foto: Redação SCTV" /></div>
+          </div>
+          <div class="field"><label for="f-video">Vídeo do YouTube (URL ou ID — opcional)</label><input id="f-video" type="text" placeholder="https://youtube.com/watch?v=..." /></div>
+          <div class="field"><label for="f-galeria">Galeria de fotos (1 URL por linha — opcional)</label><textarea id="f-galeria" rows="2" placeholder="https://...&#10;https://..."></textarea></div>
+          <div class="field"><label>Corpo da matéria * <span class="char-count" id="cWords">0 palavras • 0 min</span></label>
+            <div id="editor" aria-label="Editor de texto rico"></div>
+          </div>
+          <div class="field"><label for="f-tags">Tags (vírgula)</label><input id="f-tags" type="text" placeholder="Cujubim, Rondônia, SCTV" /></div>
           <div class="btn-row">
-            <button class="btn-submit btn-draft" type="button" id="btnRascunho">💾 Salvar rascunho</button>
-            <button class="btn-submit" type="button" id="btnPublicar">🚀 Publicar agora</button>
+            <button class="btn-submit btn-draft" type="button" id="btnRascunho">💾 Rascunho</button>
+            <button class="btn-submit btn-pend" type="button" id="btnPendente">📨 Enviar p/ aprovação</button>
+            <button class="btn-submit" type="button" id="btnPublicar" hidden>🚀 Publicar agora</button>
           </div>
           <div class="form-ok" id="edOk" hidden role="status"></div>
         </form>
       </section>
 
-      <aside class="form-card preview" aria-label="Pré-visualização">
-        <h2>👁️ Pré-visualização</h2>
-        <img id="prevCover" class="preview__cover" alt="Prévia da capa" width="1200" height="675" />
-        <h3 id="prevTitle" style="margin:10px 0 6px">Seu título aparece aqui</h3>
-        <p id="prevDek" style="font-size:.85rem;color:#CBD5E1">Linha fina...</p>
-        <div id="prevBody" style="font-size:.85rem;color:#E2E8F0;margin-top:8px"></div>
+      <!-- ============ LATERAL: SEO VIRAL ============ -->
+      <aside class="seo-side" aria-label="Painel SEO">
+        <div class="seo-card">
+          <h3>🎯 Score SEO <span id="scoreHint" style="color:var(--muted)"></span></h3>
+          <div class="score-wrap"><span class="score-num" id="scoreNum">0</span><div class="score-bar"><span id="scoreBar"></span></div></div>
+          <ul class="check-list-seo" id="seoChecks"></ul>
+        </div>
+        <div class="seo-card">
+          <h3>🔑 Palavra-chave foco</h3>
+          <div class="field" style="margin:0"><input id="f-kw" type="text" placeholder="ex: safra recorde" aria-label="Palavra-chave foco" /></div>
+          <small id="kwDensity" style="color:var(--muted)">Densidade: —</small>
+        </div>
+        <div class="seo-card">
+          <h3>🔗 Slug da URL</h3>
+          <div class="field" style="margin:0"><input id="f-slug" type="text" aria-label="Slug da URL" /><span class="err" aria-live="polite"></span></div>
+          <small style="color:var(--muted)">/noticias/<span id="slugCat">categoria</span>/<span id="slugView">slug</span></small>
+        </div>
+        <div class="seo-card">
+          <h3>🏷️ Meta title &amp; description</h3>
+          <div class="field"><input id="f-mtitle" type="text" maxlength="70" aria-label="Meta title" /><span class="char-count" id="cMTitle">0 (ideal: 50–60)</span></div>
+          <div class="field" style="margin:0"><textarea id="f-mdesc" rows="2" maxlength="170" aria-label="Meta description"></textarea><span class="char-count" id="cMDesc">0 (ideal: 120–160)</span></div>
+        </div>
+        <div class="seo-card">
+          <h3>🔍 Preview Google</h3>
+          <div class="g-snippet"><span class="g-url">sctvofc.com.br › noticias › <span id="gSlug">slug</span></span><span class="g-title" id="gTitle">Meta title aparece aqui</span><span class="g-desc" id="gDesc">Meta description aparece aqui...</span></div>
+        </div>
+        <div class="seo-card">
+          <h3>💬 Preview WhatsApp / Facebook</h3>
+          <div class="field"><label for="f-og">OG Image (thumbnail social — vazio = capa)</label><input id="f-og" type="url" placeholder="https://" /></div>
+          <div class="wa-preview"><div class="wa-bubble"><img id="waImg" alt="Thumbnail social" width="1200" height="675" /><strong id="waTitle">Título social</strong><small id="waDesc">Descrição social...</small><br /><span>sctvofc.com.br</span></div></div>
+        </div>
       </aside>
     </div>
   </main>
 
   <script src="assets/js/main.js" defer></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
   <script type="module">
     import { supabase } from './assets/js/supabaseClient.js';
     import { requireAuth } from './assets/js/guard.js';
@@ -108,38 +184,100 @@
     const me = await requireAuth('correspondente');
     const { data: { session } } = await supabase.auth.getSession();
     const autorId = session.user.id;
+    const isAdmin = me.role === 'admin';
     document.getElementById('autorLine').innerHTML = `Publicando como <strong>${me.nome}</strong> (${me.role}).`;
+    if (isAdmin) document.getElementById('btnPublicar').hidden = false;
 
     const $ = (id) => document.getElementById(id);
-    const esc = (s) => String(s ?? '').replace(/[<>&"]/g, (m) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[m]));
+    const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const slugify = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+    const ytId = (s) => { const m = String(s || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/); return m ? m[1] : (/^[\w-]{6,}$/.test(String(s || '').trim()) ? s.trim() : ''); };
 
-    // Slug automático a partir do título (editável)
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      placeholder: 'Lead com o essencial nos 10 primeiros segundos... (negrito, títulos, citações, links e vídeos YouTube)',
+      modules: { toolbar: [[{ header: [2, 3, false] }], ['bold', 'italic', 'underline'], ['blockquote'], ['link', 'image', 'video'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] }
+    });
+
     let slugManual = false;
+    const state = { capaUrl: '' };
+
+    function setCount(el, n, min, max, unit) {
+      el.textContent = `${n} ${unit} (ideal: ${min}–${max})`;
+      el.className = 'char-count ' + (n >= min && n <= max ? 'good' : (n > max ? 'bad' : ''));
+    }
+
+    function analyze() {
+      const titulo = $('f-titulo').value.trim();
+      const dek = $('f-dek').value.trim();
+      const slug = $('f-slug').value.trim();
+      const kw = $('f-kw').value.trim().toLowerCase();
+      const bodyText = quill.getText();
+      const words = bodyText.split(/\s+/).filter(Boolean).length;
+      $('cWords').textContent = `${words} palavras • ${Math.max(1, Math.round(words / 200))} min`;
+      setCount($('cTitulo'), titulo.length, 50, 60, 'caracteres');
+
+      const mt = $('f-mtitle').value, md = $('f-mdesc').value;
+      setCount($('cMTitle'), mt.length, 50, 60, 'caracteres');
+      setCount($('cMDesc'), md.length, 120, 160, 'caracteres');
+      $('gTitle').textContent = mt || 'Meta title aparece aqui';
+      $('gDesc').textContent = md || 'Meta description aparece aqui...';
+      $('gSlug').textContent = slug || 'slug';
+      $('slugView').textContent = slug || 'slug';
+      const og = $('f-og').value.trim() || state.capaUrl;
+      if (og) $('waImg').src = og;
+      $('waTitle').textContent = mt || titulo || 'Título social';
+      $('waDesc').textContent = (md || dek).slice(0, 100) || 'Descrição social...';
+
+      // Checks estilo Rank Math
+      const has = (t, k) => k && t.toLowerCase().includes(k);
+      let occ = 0, dens = 0;
+      if (kw && words) { occ = (bodyText.toLowerCase().match(new RegExp(escRe(kw), 'g')) || []).length; dens = (occ / words) * 100; }
+      $('kwDensity').textContent = kw ? `Densidade: ${dens.toFixed(1)}% (${occ}× em ${words} palavras)` : 'Densidade: —';
+      const checks = [
+        ['Palavra-chave no título', has(titulo, kw)],
+        ['Palavra-chave na linha fina', has(dek, kw)],
+        ['Palavra-chave no corpo', has(bodyText, kw)],
+        ['Palavra-chave no slug', has(slug, kw)],
+        ['Densidade 0,5–2,5%', dens >= 0.5 && dens <= 2.5],
+        ['Meta title 50–60', mt.length >= 50 && mt.length <= 60],
+        ['Meta desc 120–160', md.length >= 120 && md.length <= 160],
+        ['Capa presente', !!state.capaUrl],
+        ['Corpo ≥ 300 palavras', words >= 300]
+      ];
+      const pts = [10, 10, 15, 10, 15, 10, 10, 10, 10];
+      let score = 0;
+      $('seoChecks').innerHTML = checks.map(([t, ok], i) => {
+        if (ok) score += pts[i];
+        return `<li class="${ok ? 'ok' : ''}">${t}</li>`;
+      }).join('');
+      $('scoreNum').textContent = score;
+      $('scoreBar').style.width = score + '%';
+    }
+
     $('f-titulo').addEventListener('input', (e) => {
-      $('cTitulo').textContent = `${e.target.value.length}/120`;
-      $('prevTitle').textContent = e.target.value || 'Seu título aparece aqui';
       if (!slugManual) $('f-slug').value = slugify(e.target.value);
+      if (!$('f-mtitle').value) $('f-mtitle').value = e.target.value.slice(0, 60);
+      analyze();
     });
-    $('f-slug').addEventListener('input', () => { slugManual = true; });
-    $('f-dek').addEventListener('input', (e) => {
-      $('cDek').textContent = `${e.target.value.length}/220`;
-      $('prevDek').textContent = e.target.value || 'Linha fina...';
-    });
-    $('f-corpo').addEventListener('input', (e) => {
-      $('prevBody').innerHTML = esc(e.target.value).split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-    });
-    $('f-capa-url').addEventListener('input', (e) => { if (e.target.value) $('prevCover').src = e.target.value; });
+    $('f-slug').addEventListener('input', () => { slugManual = true; analyze(); });
+    $('f-dek').addEventListener('input', (e) => { if (!$('f-mdesc').value) $('f-mdesc').value = e.target.value.slice(0, 160); analyze(); });
+    ['f-mtitle', 'f-mdesc', 'f-kw', 'f-cat', 'f-og'].forEach((id) => $(id).addEventListener('input', analyze));
+    $('f-cat').addEventListener('change', () => { $('slugCat').textContent = $('f-cat').value || 'categoria'; });
+    quill.on('text-change', analyze);
+
+    function setCover(url) { state.capaUrl = url; if (url) $('coverPreview').src = url; analyze(); }
+    $('f-capa-url').addEventListener('input', (e) => setCover(e.target.value.trim()));
     $('f-capa-file').addEventListener('change', (e) => {
       const f = e.target.files[0];
-      if (f) $('prevCover').src = URL.createObjectURL(f);
+      if (f) $('coverPreview').src = URL.createObjectURL(f);
     });
 
     function fieldErr(id, message) {
       const input = $(id);
       const err = input.closest('.field').querySelector('.err');
       const bad = message !== '';
-      input.closest('.field').classList.toggle('invalid', bad);
+      if (input.closest('.field').classList) input.closest('.field').classList.toggle('invalid', bad);
       if (err) err.textContent = message;
       return !bad;
     }
@@ -150,17 +288,25 @@
         slug: slugify($('f-slug').value),
         titulo: $('f-titulo').value.trim(),
         linha_fina: $('f-dek').value.trim(),
-        capa_url: $('f-capa-url').value.trim(),
+        capa_url: state.capaUrl || $('f-capa-url').value.trim(),
         capa_credito: $('f-credito').value.trim(),
-        corpo: $('f-corpo').value.trim(),
+        alt_text: $('f-alt').value.trim(),
+        video_youtube: ytId($('f-video').value),
+        galeria: $('f-galeria').value.split('\n').map((s) => s.trim()).filter(Boolean).join('\n'),
+        corpo: quill.root.innerHTML,
         tags: $('f-tags').value.trim(),
-        news_keywords: $('f-kw').value.trim()
+        news_keywords: $('f-kw').value.trim() ? $('f-kw').value.trim() : $('f-tags').value.trim(),
+        keyword_foco: $('f-kw').value.trim(),
+        meta_title: $('f-mtitle').value.trim(),
+        meta_description: $('f-mdesc').value.trim(),
+        og_image: $('f-og').value.trim(),
+        cta_tipo: $('f-cta').value
       };
       let ok = true;
       ok = fieldErr('f-cat', v.categoria ? '' : 'Escolha a editoria.') && ok;
       ok = fieldErr('f-slug', v.slug.length >= 3 ? '' : 'Slug muito curto.') && ok;
-      ok = fieldErr('f-titulo', v.titulo.length >= 10 ? '' : 'Título precisa de ao menos 10 caracteres.') && ok;
-      ok = fieldErr('f-corpo', v.corpo.length >= 50 ? '' : 'Corpo muito curto (mín. 50 caracteres).') && ok;
+      ok = fieldErr('f-titulo', v.titulo.length >= 10 ? '' : 'Mín. 10 caracteres.') && ok;
+      if (quill.getText().trim().length < 50) { ok = false; }
       $('f-slug').value = v.slug;
       return ok ? v : null;
     }
@@ -171,32 +317,31 @@
       btn.disabled = true;
       const okBox = $('edOk');
       try {
-        // 1. Upload da capa (se houver arquivo)
         const file = $('f-capa-file').files[0];
-        if (file) {
+        if (file && !v.capa_url.startsWith('http')) {
           const ext = file.name.split('.').pop().toLowerCase();
           const path = `${autorId}/${Date.now()}.${ext}`;
           const { error: upErr } = await supabase.storage.from('capas').upload(path, file, { upsert: false });
           if (upErr) throw upErr;
           v.capa_url = supabase.storage.from('capas').getPublicUrl(path).data.publicUrl;
         }
-        // 2. Slug único (sufixo incremental)
         let slug = v.slug, n = 2;
         for (;;) {
           const { data } = await supabase.from('noticias').select('id').eq('slug', slug).maybeSingle();
           if (!data) break;
           slug = `${v.slug}-${n++}`;
         }
-        // 3. Insert
         const { error } = await supabase.from('noticias').insert({
           ...v, slug, status, autor_id: autorId, autor_nome: me.nome
         });
         if (error) throw error;
+        const nomes = { rascunho: 'Rascunho salvo', pendente: 'Enviada para aprovação', publicada: 'Publicada' };
         okBox.hidden = false;
+        okBox.style.borderColor = 'rgba(22,163,74,.5)';
         okBox.innerHTML = status === 'publicada'
           ? `✅ <strong>Publicada!</strong> Ver em <a href="/noticias/${v.categoria}/${slug}" style="color:var(--gold)">/noticias/${v.categoria}/${slug}</a>`
-          : `✅ <strong>Rascunho salvo</strong> (slug: ${slug}).`;
-        if (status === 'publicada') document.getElementById('formMateria').reset();
+          : `✅ <strong>${nomes[status]}!</strong> (slug: ${slug})`;
+        if (status !== 'rascunho') document.getElementById('formMateria').reset();
       } catch (e) {
         okBox.hidden = false;
         okBox.style.borderColor = 'rgba(239,68,68,.5)';
@@ -206,11 +351,13 @@
     }
 
     $('btnRascunho').addEventListener('click', (e) => enviar('rascunho', e.target));
+    $('btnPendente').addEventListener('click', (e) => enviar('pendente', e.target));
     $('btnPublicar').addEventListener('click', (e) => enviar('publicada', e.target));
     document.getElementById('btnSair').addEventListener('click', async () => {
       await supabase.auth.signOut();
       window.location.href = '/login';
     });
+    analyze();
   </script>
 </body>
 </html>
