@@ -1,0 +1,23 @@
+# Dependências e builds
+node_modules/
+.next/
+dist/
+build/
+
+# Vercel / Supabase CLI
+.vercel/
+.supabase/
+supabase/.branches/
+supabase/.temp/
+
+# Segredos — NUNCA commitar (service_role, DB password, .env)
+.env
+.env.*
+*.key
+*.pem
+
+# Sistema / editores
+Thumbs.db
+.DS_Store
+.vscode/
+*.log

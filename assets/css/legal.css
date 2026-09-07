@@ -1,0 +1,39 @@
+/* SCTV ETAPA 5 — páginas legais (leve, zero CLS, dark premium) */
+.legal-layout{max-width:900px;margin:0 auto}
+.legal-card{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:16px 0}
+.legal-card h2{font-family:var(--font-display);font-size:1.1rem;margin:20px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.legal-card h2:first-of-type{margin-top:6px;border-top:0;padding-top:0}
+.legal-card h3{font-size:.95rem;margin:12px 0 6px;color:var(--gold-soft)}
+.legal-card p,.legal-card li{font-size:.9rem;color:#CBD5E1;line-height:1.7}
+.legal-card ul,.legal-card ol{margin:8px 0 8px 20px;display:flex;flex-direction:column;gap:6px}
+.compliance-badges{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.compliance-badges span{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.5);color:#86EFAC;font-weight:800;font-size:.72rem;letter-spacing:.06em;padding:7px 12px;border-radius:999px}
+.compliance-badges span.gold{background:rgba(234,179,8,.12);border-color:rgba(234,179,8,.5);color:var(--gold-soft)}
+.callout{border-left:4px solid var(--gold);background:rgba(234,179,8,.07);border-radius:0 12px 12px 0;padding:14px 16px;margin:14px 0;font-size:.88rem}
+.callout.green{border-color:var(--green);background:rgba(22,163,74,.08)}
+.callout.red{border-color:var(--live);background:rgba(239,68,68,.07)}
+.callout strong{color:#fff}
+.ret-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:10px 0}
+.ret-table th,.ret-table td{text-align:left;padding:9px;border-bottom:1px solid var(--line);vertical-align:top}
+.ret-table th{color:var(--gold-soft);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em}
+.controller-box{background:#0B1226;border:1px dashed rgba(234,179,8,.5);border-radius:12px;padding:14px;margin:12px 0;font-size:.86rem}
+.controller-box a{color:var(--gold-soft)}
+.rights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.right-card{background:#0B1226;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:.82rem}
+.right-card b{display:block;color:#fff;margin-bottom:4px}
+.quick-contact{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.quick-contact a{flex:1;min-width:180px;text-align:center;border-radius:10px;padding:12px;font-weight:800;font-size:.85rem}
+.quick-contact .wa{background:var(--green);color:#fff}
+.quick-contact .mail{background:#0B1226;border:1px solid var(--gold);color:var(--gold-soft)}
+.legal-toc{background:#0B1226;border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;font-size:.84rem}
+.legal-toc ol{margin:6px 0 0 20px;display:flex;flex-direction:column;gap:4px}
+.legal-toc a:hover{color:var(--gold-soft)}
+.legal-meta{font-size:.76rem;color:var(--muted);margin-top:14px}
+@media(max-width:640px){.rights-grid{grid-template-columns:1fr}.legal-card{padding:16px}}
+/* Impressão do modelo de resposta: só o essencial no papel */
+@media print{
+  .topbar,.site-header,.footer__grid,.quick-contact,.skip-link,.cookie-banner{display:none!important}
+  body{background:#fff;color:#000}
+  .legal-card{border:1px solid #000}
+  .legal-card p,.legal-card li{color:#000}
+}

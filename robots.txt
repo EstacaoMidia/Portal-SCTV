@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /buscar?
+Disallow: /*?*utm_*
+
+Sitemap: https://sctvofc.com.br/sitemap.xml

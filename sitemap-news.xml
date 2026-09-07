@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <!-- Google News: apenas matérias das últimas 48h -->
+  <url>
+    <loc>https://sctvofc.com.br/noticias/cujubim-reviravolta-decisao-ultima-hora/</loc>
+    <lastmod>2026-09-06</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+    <news:news>
+      <news:publication>
+        <news:name>SCTV — Sistema de Comunicação e Transmissão Virtual</news:name>
+        <news:language>pt-BR</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-06T10:00:00-04:00</news:publication_date>
+      <news:title>Reviravolta em Cujubim/RO: decisão de última hora pode mudar tudo para 25 mil moradores</news:title>
+      <news:keywords>Cujubim, Rondônia, Porto Velho, SCTV</news:keywords>
+    </news:news>
+  </url>
+</urlset>

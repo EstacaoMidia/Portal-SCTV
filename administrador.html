@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Dono | SCTV</title>
+  <meta name="description" content="Painel restrito do dono SCTV: aprovar ou recusar correspondentes." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0F172A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/webp" href="assets/img/logo-sctv.webp" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <style>
+    .st{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.06em;padding:5px 10px;border-radius:999px;text-transform:uppercase}
+    .st-pendente{background:rgba(234,179,8,.15);color:var(--gold-soft);border:1px solid rgba(234,179,8,.5)}
+    .st-aprovado{background:rgba(22,163,74,.15);color:#86EFAC;border:1px solid rgba(22,163,74,.5)}
+    .st-rejeitado{background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.5)}
+    .role-tag{font-size:.75rem;color:var(--muted)}
+    .row-actions{display:flex;gap:6px;flex-wrap:wrap}
+    .btn-ok,.btn-no,.btn-out{border:0;border-radius:8px;padding:8px 12px;font-weight:800;font-size:.78rem;cursor:pointer}
+    .btn-ok{background:var(--green);color:#fff}
+    .btn-no{background:var(--live);color:#fff}
+    .btn-out{background:#0B1226;color:#fff;border:1px solid var(--line)}
+    .btn-ok:disabled,.btn-no:disabled{opacity:.5;cursor:wait}
+    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+    .stat{background:#0B1226;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+    .stat b{display:block;font-size:1.4rem}
+    .stat span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .filter-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+    .filter-tabs button{border:1px solid var(--line);background:#0B1226;color:#fff;border-radius:999px;padding:8px 14px;font-size:.78rem;font-weight:800;cursor:pointer}
+    .filter-tabs button[aria-selected="true"]{background:var(--gold);color:#020617;border-color:var(--gold)}
+    @media(max-width:640px){.stat-row{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#tabelaPerfis">Pular para a lista</a>
+  <div class="topbar" role="complementary" aria-label="Barra utilitária">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <span class="topbar__datetime"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/></svg><time id="currentDateTime">Carregando data...</time></span>
+      </div>
+      <div class="topbar__right"><span class="topbar__weather"><span id="weatherTemp">Cujubim/RO 31°C ☀️</span></span></div>
+    </div>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container header__inner">
+      <a href="/" class="brand" aria-label="SCTV - Início">
+        <img src="assets/img/logo-sctv.webp" alt="SCTV" class="brand__logo" width="180" height="72" decoding="async" onerror="this.style.display='none';document.getElementById('brandFallback').style.display='flex'" />
+        <span id="brandFallback" class="brand__fallback" style="display:none"><span class="brand__mark">SCTV</span><span class="brand__sub">Conectando você ao que realmente importa</span></span>
+      </a>
+      <div class="header__actions" style="display:flex">
+        <button class="btn-out" id="btnSair" type="button">Sair ⏻</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="container legal-layout">
+    <div class="page-hero" style="margin-top:18px">
+      <span class="page-hero__kicker">👑 Painel do dono • acesso restrito</span>
+      <h1>Aprovar correspondentes</h1>
+      <p id="ownerLine">Verificando permissão...</p>
+    </div>
+
+    <section class="form-card" aria-label="Solicitações de acesso">
+      <div class="stat-row" aria-label="Resumo">
+        <div class="stat"><b id="cTotal">–</b><span>Total</span></div>
+        <div class="stat"><b id="cPend">–</b><span>Pendentes</span></div>
+        <div class="stat"><b id="cAprov">–</b><span>Aprovados</span></div>
+      </div>
+      <div class="filter-tabs" role="tablist" aria-label="Filtrar por status">
+        <button data-f="todos" role="tab" aria-selected="true">Todos</button>
+        <button data-f="pendente" role="tab" aria-selected="false">Pendentes</button>
+        <button data-f="aprovado" role="tab" aria-selected="false">Aprovados</button>
+        <button data-f="rejeitado" role="tab" aria-selected="false">Rejeitados</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="kit-table" id="tabelaPerfis">
+          <thead><tr><th>Nome / E-mail</th><th>Papel</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="tbodyPerfis"><tr><td colspan="4">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+      <p id="adminMsg" class="form-ok" role="status" aria-live="polite" hidden></p>
+    </section>
+  </main>
+
+  <script src="assets/js/main.js" defer></script>
+  <script type="module">
+    import { supabase } from './assets/js/supabaseClient.js';
+
+    const tbody = document.getElementById('tbodyPerfis');
+    const msg = document.getElementById('adminMsg');
+    const ownerLine = document.getElementById('ownerLine');
+    let all = [];
+    let filtro = 'todos';
+
+    function say(t, ok) {
+      msg.hidden = false;
+      msg.innerText = t;
+      msg.style.borderColor = ok ? 'rgba(22,163,74,.5)' : 'rgba(239,68,68,.5)';
+    }
+    const esc = (s) => String(s ?? '').replace(/[<>&"]/g, (m) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[m]));
+
+    // Guarda: só admin aprovado entra
+    const { data: sess } = await supabase.auth.getSession();
+    if (!sess.session) { window.location.href = '/login'; throw new Error('no-session'); }
+
+    const { data: me } = await supabase.from('profiles').select('nome, role, status').eq('id', sess.session.user.id).single();
+    if (!me || me.role !== 'admin' || me.status !== 'aprovado') {
+      await supabase.auth.signOut();
+      window.location.href = '/login';
+      throw new Error('forbidden');
+    }
+    ownerLine.innerHTML = `Logado como <strong>${esc(me.nome)}</strong> (dono). Gerencie abaixo quem entra no quadro.`;
+
+    async function carregar() {
+      const { data, error } = await supabase.from('profiles').select('id, nome, email, role, status, created_at').order('created_at', { ascending: false });
+      if (error) { tbody.innerHTML = '<tr><td colspan="4">Erro ao carregar: ' + esc(error.message) + '</td></tr>'; return; }
+      all = data;
+      document.getElementById('cTotal').textContent = all.length;
+      document.getElementById('cPend').textContent = all.filter((p) => p.status === 'pendente').length;
+      document.getElementById('cAprov').textContent = all.filter((p) => p.status === 'aprovado').length;
+      render();
+    }
+
+    function render() {
+      const rows = all.filter((p) => filtro === 'todos' || p.status === filtro);
+      if (!rows.length) { tbody.innerHTML = '<tr><td colspan="4">Nenhum perfil neste filtro.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((p) => `<tr>
+        <td><b>${esc(p.nome)}</b><br><span class="role-tag">${esc(p.email)}</span></td>
+        <td><span class="role-tag">${esc(p.role)}</span></td>
+        <td><span class="st st-${esc(p.status)}">${esc(p.status)}</span></td>
+        <td><div class="row-actions">
+          ${p.status !== 'aprovado' ? `<button class="btn-ok" data-act="aprovado" data-id="${p.id}">Aprovar</button>` : ''}
+          ${p.status !== 'rejeitado' ? `<button class="btn-no" data-act="rejeitado" data-id="${p.id}">Recusar</button>` : ''}
+        </div></td>
+      </tr>`).join('');
+    }
+
+    tbody.addEventListener('click', async (e) => {
+      const b = e.target.closest('button[data-act]');
+      if (!b) return;
+      b.disabled = true;
+      const { error } = await supabase.from('profiles').update({ status: b.dataset.act }).eq('id', b.dataset.id);
+      if (error) { say('Erro: ' + error.message, false); b.disabled = false; return; }
+      say(`Perfil ${b.dataset.act === 'aprovado' ? 'APROVADO ✅' : 'RECUSADO ⛔'} com sucesso.`, true);
+      await carregar();
+    });
+
+    document.querySelectorAll('.filter-tabs button').forEach((t) => t.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tabs button').forEach((x) => x.setAttribute('aria-selected', 'false'));
+      t.setAttribute('aria-selected', 'true');
+      filtro = t.dataset.f;
+      render();
+    }));
+
+    document.getElementById('btnSair').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.href = '/login';
+    });
+
+    await carregar();
+  </script>
+</body>
+</html>

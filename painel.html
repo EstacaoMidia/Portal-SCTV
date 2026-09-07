@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Correspondente | SCTV</title>
+  <meta name="description" content="Painel restrito do correspondente SCTV." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0F172A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" /></noscript>
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/webp" href="assets/img/logo-sctv.webp" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <div class="topbar" role="complementary" aria-label="Barra utilitária">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <span class="topbar__datetime"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/></svg><time id="currentDateTime">Carregando data...</time></span>
+      </div>
+      <div class="topbar__right"><span class="topbar__weather"><span id="weatherTemp">Cujubim/RO 31°C ☀️</span></span></div>
+    </div>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container header__inner">
+      <a href="/" class="brand" aria-label="SCTV - Início">
+        <img src="assets/img/logo-sctv.webp" alt="SCTV" class="brand__logo" width="180" height="72" decoding="async" onerror="this.style.display='none';document.getElementById('brandFallback').style.display='flex'" />
+        <span id="brandFallback" class="brand__fallback" style="display:none"><span class="brand__mark">SCTV</span><span class="brand__sub">Conectando você ao que realmente importa</span></span>
+      </a>
+      <div class="header__actions" style="display:flex">
+        <button class="btn-out" id="btnSair" type="button" style="background:#0B1226;color:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer">Sair ⏻</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo" class="container legal-layout">
+    <div class="page-hero" style="margin-top:18px">
+      <span class="page-hero__kicker">🎙️ Painel do correspondente</span>
+      <h1 id="boasVindas">Carregando...</h1>
+      <p id="perfilLinha">Verificando seu acesso...</p>
+    </div>
+    <section class="form-card" aria-label="Meu acesso">
+      <div id="painelBox"><p>Carregando dados do perfil...</p></div>
+      <p class="kit-note"><a href="/" style="color:var(--gold)">← Voltar ao portal</a></p>
+    </section>
+  </main>
+
+  <script src="assets/js/main.js" defer></script>
+  <script type="module">
+    import { supabase } from './assets/js/supabaseClient.js';
+
+    const esc = (s) => String(s ?? '').replace(/[<>&"]/g, (m) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[m]));
+
+    const { data: sess } = await supabase.auth.getSession();
+    if (!sess.session) { window.location.href = '/login'; throw new Error('no-session'); }
+
+    const { data: me, error } = await supabase.from('profiles').select('nome, email, role, status, created_at').eq('id', sess.session.user.id).single();
+    if (error || !me) {
+      await supabase.auth.signOut();
+      window.location.href = '/login';
+      throw new Error('no-profile');
+    }
+    if (me.status !== 'aprovado') {
+      await supabase.auth.signOut();
+      window.location.href = '/login';
+      throw new Error('not-approved');
+    }
+
+    document.getElementById('boasVindas').textContent = `Bem-vindo(a), ${me.nome.split(' ')[0]}! 🎙️`;
+    document.getElementById('perfilLinha').innerHTML = `Acesso liberado como <strong>correspondente SCTV</strong>.`;
+    document.getElementById('painelBox').innerHTML = `
+      <ul class="info-list">
+        <li>👤 <strong>${esc(me.nome)}</strong></li>
+        <li>✉️ ${esc(me.email)}</li>
+        <li>🎙️ Papel: <strong>${esc(me.role)}</strong></li>
+        <li>✅ Status: <strong>aprovado</strong></li>
+        <li>📅 No quadro desde: ${new Date(me.created_at).toLocaleDateString('pt-BR')}</li>
+      </ul>
+      <p class="kit-note">Em breve: envio de pautas e reportagens por aqui. Por enquanto, envie seu material pelo WhatsApp <a href="https://wa.me/5569984062398" style="color:var(--gold)">(69) 98406-2398</a>.</p>`;
+
+    document.getElementById('btnSair').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.href = '/login';
+    });
+  </script>
+</body>
+</html>

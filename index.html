@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCTV - O Canal de Informação, Entretenimento e Conexão em Tempo Real</title>
+  <meta name="description" content="SCTV - Sistema de Comunicação e Transmissão Virtual. Conectando você ao que realmente importa: notícias do Brasil e do mundo, agro, esportes, entretenimento e TV ao vivo em sctvofc.com.br" />
+  <meta name="keywords" content="SCTV, sctvofc, notícias, TV digital, ao vivo, agro, Rondônia, Brasil, entretenimento, esportes" />
+  <link rel="canonical" href="https://sctvofc.com.br/" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#0F172A" />
+
+  <!-- Open Graph / Viral SEO -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="SCTV" />
+  <meta property="og:title" content="SCTV - O Canal de Informação, Entretenimento e Conexão em Tempo Real" />
+  <meta property="og:description" content="Conectando você ao que realmente importa. Assista ao vivo, notícias urgentes, agro, esportes e variedades." />
+  <meta property="og:url" content="https://sctvofc.com.br/" />
+  <meta property="og:image" content="https://sctvofc.com.br/assets/img/og-cover.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@sctvofc" />
+
+  <!-- Fonts: Inter + Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/webp" href="assets/img/logo-sctv.webp" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+
+  <!-- Schema.org NewsMediaOrganization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "SCTV - Sistema de Comunicação e Transmissão Virtual",
+    "slogan": "Conectando você ao que realmente importa",
+    "url": "https://sctvofc.com.br/",
+    "logo": "https://sctvofc.com.br/assets/img/LOGO SCTV 3.jpg",
+    "email": "sctvofc@gmail.com",
+    "telephone": "+55-69-98406-2398",
+    "sameAs": [
+      "https://instagram.com/sctvofc",
+      "https://facebook.com/sctvofc",
+      "https://youtube.com/@sctvofc"
+    ]
+  }
+  </script>
+  <!-- Bing Webmaster Tools: cole abaixo o código msvalidate.01 + IndexNow ativo via /dbe807132c95a64f4a06f81cd5e29b73.txt -->
+  <!-- <meta name="msvalidate.01" content="COLE_SEU_CODIGO_BING_AQUI" /> -->
+  <!-- AdSense: cole seu script aqui -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+
+  <!-- ============ 1. BARRA AUXILIAR (TOP UTILITY BAR) ============ -->
+  <div class="topbar" role="complementary" aria-label="Barra utilitária">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <span class="topbar__datetime" aria-live="off">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 10.6 4.2 2.5-.8 1.3L11 13.5V7h2v5.6Z"/></svg>
+          <time id="currentDateTime" datetime="">Carregando data...</time>
+        </span>
+        <span class="topbar__divider" aria-hidden="true">|</span>
+        <span class="topbar__weather" id="weatherWidget" title="Previsão do tempo - Cujubim/RO (sede SCTV)">
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-5 2 3h-4l2-3ZM2 13l3-2v4l-3-2Zm18 0 3 2-3 2v-4ZM4.2 4.2l1.4 1.4-.7.7-1.4-1.4.7-.7Zm15.6 0 .7.7-1.4 1.4-.7-.7 1.4-1.4ZM12 0h0v0Z"/></svg>
+          <span id="weatherTemp">Cujubim/RO 31°C ☀️</span>
+        </span>
+      </div>
+
+      <div class="topbar__right">
+        <div class="topbar__social" aria-label="Redes sociais SCTV">
+          <a href="https://instagram.com/sctvofc" target="_blank" rel="noopener" aria-label="Instagram @sctvofc" title="Instagram @sctvofc">
+            <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1s-3.6 0-4.9-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2Zm0 3.6a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4Zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9Z"/></svg>
+          </a>
+          <a href="https://facebook.com/sctvofc" target="_blank" rel="noopener" aria-label="Facebook @sctvofc" title="Facebook @sctvofc">
+            <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+          </a>
+          <a href="https://youtube.com/@sctvofc" target="_blank" rel="noopener" aria-label="YouTube @sctvofc" title="YouTube @sctvofc">
+            <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg>
+          </a>
+          <a href="https://wa.me/5569984062398" target="_blank" rel="noopener" aria-label="WhatsApp (69) 98406-2398" title="WhatsApp (69) 98406-2398" class="hide-mobile">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.4 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-3.7-.8-3.1-1.3-5.1-4.4-5.3-4.6-.1-.2-1.2-1.7-1.2-3.2s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5-.3.6-.6.8-.4 1.1.6 1.1 1.4 1.8 2.6 2.4.3.1.4.1.6-.1l.8-.9c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.3 0 .2 0 .6-.1 1.4Z"/></svg>
+          </a>
+        </div>
+        <a href="#ao-vivo" class="btn-live" aria-label="Assistir ao vivo">
+          <span class="btn-live__dot"></span> AO VIVO
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 2. HEADER PRINCIPAL ============ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header__inner">
+      <!-- Logo -->
+      <a href="/" class="brand" aria-label="SCTV - Início">
+        <!-- Logo oficial em assets/img/ -->
+        <img src="assets/img/logo-sctv.webp" alt="SCTV - Sistema de Comunicação e Transmissão Virtual" class="brand__logo" width="180" height="72" onerror="this.style.display='none';document.getElementById('brandFallback').style.display='flex'" />
+        <span id="brandFallback" class="brand__fallback" style="display:none">
+          <span class="brand__mark">SCTV</span>
+          <span class="brand__sub">Conectando você ao que realmente importa</span>
+        </span>
+      </a>
+
+      <!-- Slot anúncio header 720x90 / 320x50 -->
+      <div class="header-ad" role="complementary" aria-label="Publicidade">
+        <span class="ad-label">Publicidade</span>
+        <a href="/contato" class="header-ad__slot">
+          <!-- Desktop 720x90 | Mobile 320x50 via CSS -->
+          <span class="header-ad__text"><strong>720 × 90</strong> Banner Publicitário — Anuncie aqui <em>sctvofc@gmail.com</em></span>
+          <!-- Para AdSense real, substitua pelo <ins class="adsbygoogle"> -->
+        </a>
+      </div>
+
+      <!-- Ações mobile -->
+      <div class="header__actions">
+        <button class="icon-btn" id="searchToggleMobile" aria-label="Abrir busca">🔍</button>
+        <button class="hamburger" id="menuToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="mainNav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navegação -->
+    <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
+      <div class="container main-nav__inner">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="/" class="nav-link active">Início</a></li>
+          <li class="nav-item nav-item--live"><a href="#ao-vivo" class="nav-link">Ao Vivo / Assista</a></li>
+          <li class="nav-item has-submenu">
+            <a href="/noticias" class="nav-link" aria-haspopup="true">Notícias <span class="caret">▾</span></a>
+            <ul class="submenu">
+              <li><a href="/noticias/brasil">Brasil</a></li>
+              <li><a href="/noticias/mundo">Mundo</a></li>
+              <li><a href="/noticias/politica">Política</a></li>
+              <li><a href="/noticias/economia">Economia</a></li>
+            </ul>
+          </li>
+          <li class="nav-item has-submenu">
+            <a href="/entretenimento" class="nav-link" aria-haspopup="true">Entretenimento &amp; Variedades <span class="caret">▾</span></a>
+            <ul class="submenu">
+              <li><a href="/entretenimento/cultura">Cultura</a></li>
+              <li><a href="/entretenimento/famosos">Famosos</a></li>
+              <li><a href="/entretenimento/estilo-de-vida">Estilo de Vida</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a href="/agro" class="nav-link">Agro &amp; Negócios</a></li>
+          <li class="nav-item"><a href="/esportes" class="nav-link">Esportes</a></li>
+          <li class="nav-item"><a href="/programacao" class="nav-link">Programação</a></li>
+          <li class="nav-item"><a href="/contato" class="nav-link">Contato / Anuncie</a></li>
+        </ul>
+        <button class="search-btn" id="searchToggle" aria-label="Buscar no portal">
+          <svg viewBox="0 0 24 24" width="19" height="19"><path fill="currentColor" d="M10 2a8 8 0 1 0 4.9 14.3l5 5 1.4-1.4-5-5A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Barra de busca expansível -->
+    <div class="search-bar" id="searchBar" hidden>
+      <div class="container">
+        <form role="search" action="/buscar" method="get" class="search-form">
+          <input type="search" name="q" placeholder="Buscar notícias, programas, esportes..." aria-label="Buscar no portal" autocomplete="off" />
+          <button type="submit">Buscar</button>
+          <button type="button" id="searchClose" aria-label="Fechar busca">✕</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <!-- ============ 5. TICKER BREAKING NEWS ============ -->
+    <div class="ticker" role="region" aria-label="Plantão de notícias">
+      <div class="container ticker__inner">
+        <span class="ticker__label"><span class="ticker__pulse"></span> PLANTÃO</span>
+        <div class="ticker__viewport" aria-live="off">
+          <div class="ticker__track" id="tickerTrack">
+            <a href="/noticias/brasil/urgente-exemplo">🔴 Defesa Civil emite alerta para Rondônia — SCTV acompanha ao vivo</a>
+            <a href="/agro/safra-recorde">🌱 Safra recorde: RO projeta +23% e atrai investidores</a>
+            <a href="/esportes/estadual">⚽ Final do Estadual: ingressos esgotam em 2h</a>
+            <a href="/entretenimento/exclusivo">⭐ Exclusivo: novo programa de auditório estreia nesta semana na SCTV</a>
+            <a href="/noticias/economia/pix">💰 Pix automático entra em vigor — veja o que muda no seu bolso</a>
+          </div>
+        </div>
+        <div class="ticker__controls">
+          <button id="tickerPrev" aria-label="Notícia anterior">‹</button>
+          <button id="tickerPause" aria-label="Pausar ou retomar plantão">❚❚</button>
+          <button id="tickerNext" aria-label="Próxima notícia">›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 3. BANNER DE TRANSIÇÃO FULL-WIDTH 1280x100 ============ -->
+    <div class="container">
+      <div class="ad-full" role="complementary" aria-label="Espaço publicitário topo">
+        <span class="ad-label">Publicidade</span>
+        <a href="https://wa.me/5569984062398?text=Quero%20anunciar%20na%20SCTV" target="_blank" rel="noopener" class="ad-full__slot">
+          [ ESPAÇO PUBLICITÁRIO - Anuncie Aqui ] &nbsp;·&nbsp; 1280 × 100 &nbsp;·&nbsp; (69) 98406-2398
+        </a>
+      </div>
+    </div>
+
+    <!-- ============ 4. HERO SECTION ============ -->
+    <section class="hero container" aria-label="Destaques da emissora">
+      <div class="hero__head">
+        <h1 class="hero__title">SCTV - O Canal de Informação, Entretenimento e Conexão em Tempo Real</h1>
+        <p class="hero__slogan">Conectando você ao que realmente importa <span class="hero__live-mini"><i></i> Rondônia • Brasil • Mundo</span></p>
+      </div>
+
+      <div class="hero__grid">
+        <!-- Card principal gigante -->
+        <a href="/noticias/brasil/urgente-exemplo" class="card card--main" aria-label="Matéria principal urgente">
+          <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80&auto=format&fit=crop" alt="Estúdio de telejornal SCTV com breaking news" loading="eager" fetchpriority="high" />
+          <span class="badge badge--urgent pulse">URGENTE</span>
+          <div class="card__overlay">
+            <span class="card__kicker">Brasil • Há 12 min • 48 mil leituras</span>
+            <h2 class="card__headline">Tempestade histórica em Rondônia: SCTV acompanha ao vivo os impactos e a mobilização das autoridades</h2>
+            <p class="card__excerpt">Cobertura em tempo real com imagens exclusivas, alertas da Defesa Civil e entrevistas com especialistas. Entenda o que muda para você.</p>
+            <span class="card__meta">Por Redação SCTV • 6 min de leitura</span>
+          </div>
+        </a>
+
+        <!-- Coluna lateral: 3 cards -->
+        <div class="hero__side">
+          <a href="#ao-vivo" class="card card--side" aria-label="Assista ao vivo">
+            <img src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=800&q=80&auto=format&fit=crop" alt="Transmissão ao vivo SCTV" loading="lazy" />
+            <span class="badge badge--live pulse"><i></i> AO VIVO</span>
+            <div class="card__overlay card__overlay--compact">
+              <h3>Jornal SCTV Meio-Dia: assista agora à edição ao vivo com as principais manchetes</h3>
+              <span class="card__kicker">12h00 • YouTube • Facebook</span>
+            </div>
+          </a>
+
+          <a href="/agro/safra-recorde" class="card card--side" aria-label="Matéria agro">
+            <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80&auto=format&fit=crop" alt="Lavoura de soja em Rondônia ao pôr do sol" loading="lazy" />
+            <span class="badge badge--agro">AGRO</span>
+            <div class="card__overlay card__overlay--compact">
+              <h3>Safra recorde: Rondônia projeta crescimento de 23% e atrai investidores do país inteiro</h3>
+              <span class="card__kicker">Agro &amp; Negócios • Há 1h</span>
+            </div>
+          </a>
+
+          <a href="/entretenimento/exclusivo" class="card card--side" aria-label="Matéria exclusiva">
+            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80&auto=format&fit=crop" alt="Show e entretenimento exclusivo SCTV" loading="lazy" />
+            <span class="badge badge--exclusive">EXCLUSIVO</span>
+            <div class="card__overlay card__overlay--compact">
+              <h3>Exclusivo: bastidores do novo programa de auditório da SCTV que estreia nesta semana</h3>
+              <span class="card__kicker">Entretenimento • Há 2h</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6. SEÇÃO AO VIVO + PLAYER YOUTUBE ============ -->
+    <section id="ao-vivo" class="live-section container" aria-label="Assistir SCTV ao vivo">
+      <div class="section-head">
+        <h2 class="section-title"><span class="live-dot" aria-hidden="true"></span> AO VIVO <span class="section-title__light">— SCTV no ar agora</span></h2>
+        <a href="https://youtube.com/@sctvofc" target="_blank" rel="noopener" class="section-link">Abrir no YouTube ↗</a>
+      </div>
+
+      <div class="live-grid">
+        <!-- Player facade (performance + Core Web Vitals) -->
+        <div class="live-main">
+          <div class="live-player" id="livePlayer">
+            <button class="live-facade" id="liveFacade" aria-label="Reproduzir transmissão ao vivo">
+              <img src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=1200&q=80&auto=format&fit=crop" alt="Estúdio SCTV ao vivo" loading="lazy" />
+              <span class="live-facade__overlay"></span>
+              <span class="live-facade__btn">▶</span>
+              <span class="live-facade__text"><strong>● NO AR:</strong> Jornal SCTV Meio-Dia — clique para assistir</span>
+            </button>
+            <!--
+              CONFIG YOUTUBE: troque VIDEO_ID pelo ID da sua live ou use live_stream do canal.
+              Opção 1 (live permanente do canal): https://www.youtube.com/embed/live_stream?channel=SEU_CHANNEL_ID&autoplay=1&rel=0
+              Opção 2 (vídeo específico): https://www.youtube.com/embed/VIDEO_ID?autoplay=1&rel=0
+              Descubra o Channel ID em: https://youtube.com/@sctvofc → Sobre → Compartilhar canal
+            -->
+          </div>
+          <div class="live-info">
+            <div class="live-info__text">
+              <span class="badge badge--live pulse"><i></i> AO VIVO</span>
+              <h3>Jornal SCTV Meio-Dia • Notícias de Rondônia, Brasil e Mundo</h3>
+              <p><span id="liveViewers">🔥 2.4 mil</span> assistindo agora • Transmissão simultânea no YouTube e Facebook @sctvofc</p>
+            </div>
+            <div class="live-info__actions">
+              <button class="btn-share" id="shareBtn" type="button">🔗 Compartilhar</button>
+              <button class="btn-chat" id="chatToggle" type="button" aria-expanded="false" aria-controls="liveChatWrap">💬 Chat</button>
+              <a class="btn-yt" href="https://wa.me/5569984062398?text=Estou%20assistindo%20a%20SCTV%20ao%20vivo!" target="_blank" rel="noopener">📲 WhatsApp</a>
+            </div>
+          </div>
+          <div class="live-chat" id="liveChatWrap" hidden>
+            <span class="ad-label">Chat ao vivo (YouTube)</span>
+            <iframe id="liveChatFrame" title="Chat ao vivo SCTV" loading="lazy" src=""></iframe>
+          </div>
+          <div class="live-schedule" aria-label="Próxima programação">
+            <span><strong>13h00</strong> Agro &amp; Negócios</span>
+            <span><strong>18h30</strong> SCTV Notícias Noite</span>
+            <span><strong>20h00</strong> Variedades + Esporte</span>
+            <a href="/programacao">Grade completa →</a>
+          </div>
+        </div>
+
+        <!-- Coluna: próximos programas -->
+        <div class="live-next">
+          <h3 class="live-next__title">A seguir na SCTV</h3>
+          <a href="/programacao/agro" class="next-item">
+            <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=70&auto=format&fit=crop" alt="Agro e Negócios" loading="lazy" />
+            <div><strong>13h00 • Agro &amp; Negócios</strong><span>Safra recorde e mercado do boi gordo</span></div>
+          </a>
+          <a href="/programacao/esporte" class="next-item">
+            <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=70&auto=format&fit=crop" alt="Esporte" loading="lazy" />
+            <div><strong>18h00 • Esporte Total RO</strong><span>Estadual, bastidores e mercado da bola</span></div>
+          </a>
+          <a href="/programacao/variedades" class="next-item">
+            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=70&auto=format&fit=crop" alt="Variedades" loading="lazy" />
+            <div><strong>20h00 • SCTV Show</strong><span>Famosos, cultura e estilo de vida</span></div>
+          </a>
+          <a href="https://wa.me/5569984062398?text=Quero%20anunciar%20no%20intervalo%20da%20live!" target="_blank" rel="noopener" class="next-ad">📢 <strong>Anuncie no intervalo</strong><span>300×100 • (69) 98406-2398</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7. CONTEÚDO + SIDEBAR MONETIZAÇÃO ============ -->
+    <div class="container content-layout">
+      <!-- Grade de categorias -->
+      <div class="feed" aria-label="Notícias por categoria">
+
+        <section class="cat-block" aria-label="Agro e Negócios">
+          <div class="cat-head cat-head--agro">
+            <h2><span>🌱</span> Agro &amp; Negócios</h2>
+            <a href="/agro">Ver tudo →</a>
+          </div>
+          <div class="cat-grid">
+            <a href="/agro/safra-recorde" class="mini-card mini-card--large">
+              <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=75&auto=format&fit=crop" alt="Safra recorde em Rondônia" loading="lazy" />
+              <span class="badge badge--agro">AGRO</span>
+              <div class="mini-card__body"><h3>Safra recorde: RO projeta +23% e atrai investidores do país inteiro</h3><span>Há 1h • 12 mil leituras</span></div>
+            </a>
+            <a href="/agro/boi-gordo" class="mini-card"><img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=600&q=70&auto=format&fit=crop" alt="Boi gordo" loading="lazy" /><div class="mini-card__body"><h3>Boi gordo sobe 4ª semana seguida; veja a cotação de hoje</h3><span>Há 3h • Agro</span></div></a>
+            <a href="/agro/cafe" class="mini-card"><img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=70&auto=format&fit=crop" alt="Café robusta" loading="lazy" /><div class="mini-card__body"><h3>Café robusta de RO conquista prêmio nacional de qualidade</h3><span>Há 5h • Negócios</span></div></a>
+          </div>
+        </section>
+
+        <div class="ad-infeed" role="complementary" aria-label="Publicidade">
+          <span class="ad-label">Publicidade • In-feed</span>
+          <a href="https://wa.me/5569984062398?text=Quero%20anunciar%20no%20portal%20SCTV" target="_blank" rel="noopener" class="ad-infeed__slot">[ ESPAÇO IN-FEED RESPONSIVO — Anuncie Aqui ]</a>
+        </div>
+
+        <section class="cat-block" aria-label="Esportes">
+          <div class="cat-head cat-head--sport">
+            <h2><span>⚽</span> Esportes</h2>
+            <a href="/esportes">Ver tudo →</a>
+          </div>
+          <div class="cat-grid">
+            <a href="/esportes/estadual" class="mini-card mini-card--large">
+              <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=75&auto=format&fit=crop" alt="Estádio lotado" loading="lazy" />
+              <span class="badge badge--sport">ESPORTE</span>
+              <div class="mini-card__body"><h3>Final do Estadual lota arena: veja gols, festa e entrevistas exclusivas</h3><span>Há 40 min • 31 mil leituras</span></div>
+            </a>
+            <a href="/esportes/corrida" class="mini-card"><img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=70&auto=format&fit=crop" alt="Corrida de rua" loading="lazy" /><div class="mini-card__body"><h3>Corrida SCTV 5K abre inscrições com kit promocional</h3><span>Há 2h • Cujubim/RO</span></div></a>
+            <a href="/esportes/varzea" class="mini-card"><img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600&q=70&auto=format&fit=crop" alt="Futebol amador" loading="lazy" /><div class="mini-card__body"><h3>Várzea: 16 times disputam a Copa SCTV de Futebol Amador</h3><span>Há 6h • Amador</span></div></a>
+          </div>
+        </section>
+
+        <section class="cat-block" aria-label="Entretenimento e Variedades">
+          <div class="cat-head cat-head--fun">
+            <h2><span>⭐</span> Entretenimento &amp; Variedades</h2>
+            <a href="/entretenimento">Ver tudo →</a>
+          </div>
+          <div class="cat-grid">
+            <a href="/entretenimento/exclusivo" class="mini-card mini-card--large">
+              <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=75&auto=format&fit=crop" alt="Palco de show" loading="lazy" />
+              <span class="badge badge--exclusive">EXCLUSIVO</span>
+              <div class="mini-card__body"><h3>Bastidores do novo programa de auditório que estreia nesta semana</h3><span>Há 2h • 18 mil leituras</span></div>
+            </a>
+            <a href="/entretenimento/famosos" class="mini-card"><img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=70&auto=format&fit=crop" alt="Famosos" loading="lazy" /><div class="mini-card__body"><h3>Famosos prestigiam festa de lançamento da grade SCTV 2026</h3><span>Há 4h • Famosos</span></div></a>
+            <a href="/entretenimento/cultura" class="mini-card"><img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&q=70&auto=format&fit=crop" alt="Cultura regional" loading="lazy" /><div class="mini-card__body"><h3>Festival cultural leva 20 mil pessoas ao centro de Cujubim/RO</h3><span>Ontem • Cultura</span></div></a>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Sidebar monetização -->
+      <aside class="sidebar" aria-label="Barra lateral">
+        <div class="widget widget--ad" role="complementary" aria-label="Anúncio 300 por 250">
+          <span class="ad-label">Publicidade • 300×250</span>
+          <a href="https://wa.me/5569984062398?text=Quero%20o%20banner%20300x250!" target="_blank" rel="noopener" class="ad-box ad-box--250">[ 300 × 250 ]<small>Anuncie aqui • sctvofc@gmail.com</small></a>
+        </div>
+
+        <div class="widget widget--tabs" aria-label="Mais lidas">
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="lidas" role="tab" aria-selected="true">🔥 Mais lidas</button>
+            <button class="tab" data-tab="recentes" role="tab" aria-selected="false">🕒 Recentes</button>
+          </div>
+          <ol class="tab-list active" id="tab-lidas">
+            <li><a href="/noticias/brasil/urgente-exemplo"><b>1</b> Tempestade histórica: SCTV ao vivo dos impactos em RO</a></li>
+            <li><a href="/agro/safra-recorde"><b>2</b> Safra recorde projeta +23% em Rondônia</a></li>
+            <li><a href="/esportes/estadual"><b>3</b> Final do Estadual: ingressos esgotam em 2h</a></li>
+            <li><a href="/noticias/economia/pix"><b>4</b> Pix automático: o que muda no seu bolso</a></li>
+            <li><a href="/entretenimento/exclusivo"><b>5</b> Novo programa de auditório: bastidores exclusivos</a></li>
+          </ol>
+          <ol class="tab-list" id="tab-recentes" hidden>
+            <li><a href="/agro/cafe"><b>•</b> Café robusta de RO vence prêmio nacional</a></li>
+            <li><a href="/esportes/corrida"><b>•</b> Corrida SCTV 5K abre inscrições</a></li>
+            <li><a href="/entretenimento/cultura"><b>•</b> Festival cultural leva 20 mil ao centro</a></li>
+            <li><a href="/agro/boi-gordo"><b>•</b> Boi gordo sobe pela 4ª semana seguida</a></li>
+          </ol>
+        </div>
+
+        <div class="widget widget--ad" role="complementary" aria-label="Anúncio 300 por 600">
+          <span class="ad-label">Publicidade • 300×600</span>
+          <a href="https://wa.me/5569984062398?text=Quero%20o%20arranha-céu%20300x600!" target="_blank" rel="noopener" class="ad-box ad-box--600">[ 300 × 600 ]<small>Arranha-céu premium • (69) 98406-2398</small></a>
+        </div>
+
+        <div class="widget widget--news" aria-label="Newsletter">
+          <h3 class="widget__title">📩 Receba o plantão SCTV</h3>
+          <p>Urgentes, agro e esportes direto no seu WhatsApp/e-mail.</p>
+          <form class="news-form" id="newsForm">
+            <input type="email" name="email" placeholder="Seu melhor e-mail" aria-label="Seu e-mail" required />
+            <button type="submit">Assinar grátis</button>
+          </form>
+          <small id="newsMsg" aria-live="polite"></small>
+        </div>
+
+        <div class="widget widget--social" aria-label="Siga a SCTV">
+          <h3 class="widget__title">Siga <span>@sctvofc</span></h3>
+          <div class="social-row">
+            <a href="https://instagram.com/sctvofc" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://facebook.com/sctvofc" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://youtube.com/@sctvofc" target="_blank" rel="noopener">YouTube</a>
+          </div>
+          <p class="widget__contact">📞 (69) 98406-2398<br />✉️ sctvofc@gmail.com<br />🌐 sctvofc.com.br</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer" aria-label="Rodapé SCTV">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <img src="assets/img/logo-sctv.webp" alt="SCTV" width="150" height="60" loading="lazy" decoding="async" onerror="this.style.display='none'" />
+        <p><strong style="color:#fff">SCTV</strong> — Sistema de Comunicação e Transmissão Virtual. Sede em Cujubim/RO. <em style="color:var(--gold)">Conectando você ao que realmente importa.</em></p>
+        <div class="footer__social"><a href="https://instagram.com/sctvofc" target="_blank" rel="noopener">Instagram</a><a href="https://facebook.com/sctvofc" target="_blank" rel="noopener">Facebook</a><a href="https://youtube.com/@sctvofc" target="_blank" rel="noopener">YouTube</a><a href="https://chat.whatsapp.com/D86YCp0sfvZ5vOKAxO6Evk" target="_blank" rel="noopener">Grupo VIP</a></div>
+      </div>
+      <nav class="footer__col" aria-label="Institucional"><h3>Institucional</h3><ul><li><a href="/">Início</a></li><li><a href="/single.html">Notícias</a></li><li><a href="/programacao.html">Programação / Ao Vivo</a></li><li><a href="/contato.html">Contato / Anuncie</a></li><li><a href="/sitemap.xml">Mapa do site</a></li></ul></nav>
+      <nav class="footer__col" aria-label="Cobertura"><h3>Cobertura</h3><ul><li><a href="/single.html">Cujubim / RO (sede)</a></li><li><a href="/single.html">Porto Velho / RO</a></li><li><a href="/">Rondônia</a></li><li><a href="/">Brasil e Mundo</a></li><li><a href="/">Agro &amp; Esporte</a></li></ul></nav>
+      <nav class="footer__col" aria-label="Suporte e legal"><h3>Suporte e Legal</h3><ul><li><a href="/contato.html">Fale conosco</a></li><li><a href="/contato.html#midia-kit">Mídia Kit / Anuncie</a></li><li><a href="/privacidade.html">Política de Privacidade</a></li><li><a href="/termos.html">Termos de Uso</a></li><li><a href="/lgpd.html">Portal do Titular (LGPD)</a></li><li><a href="https://wa.me/5569984062398">WhatsApp (69) 98406-2398</a></li></ul></nav>
+    </div>
+    <div class="footer__bottom">© <span id="year">2026</span> SCTV • sctvofc.com.br • Cujubim/RO • sctvofc@gmail.com • <a href="/privacidade.html">Privacidade</a> • <a href="/sitemap.xml">Sitemap</a></div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
