@@ -119,6 +119,32 @@
   </main>
 
   <script src="assets/js/main.js" defer></script>
+  <script>
+    /* Fallback sem dependências: abas funcionam mesmo se o módulo/Supabase falhar.
+       (O módulo principal repete a mesma lógica de forma idempotente.) */
+    (function () {
+      function selectTab(name) {
+        if (name === 'nova') { window.location.href = '/criar-materia'; return; }
+        document.querySelectorAll('[data-tab]').forEach(function (x) { x.setAttribute('aria-selected', String(x.dataset.tab === name)); });
+        var m = document.getElementById('panel-materias');
+        var u = document.getElementById('panel-users');
+        if (m) m.hidden = name !== 'materias';
+        if (u) u.hidden = name !== 'users';
+      }
+      document.querySelectorAll('[data-tab]').forEach(function (t) {
+        t.addEventListener('click', function () { selectTab(t.dataset.tab); });
+      });
+      // Watchdog: jamais travar no "Carregando..."
+      setTimeout(function () {
+        [['tbodyMats', 'matérias'], ['tbodyPerfis', 'correspondentes']].forEach(function (pair) {
+          var tb = document.getElementById(pair[0]);
+          if (tb && tb.textContent.indexOf('Carregando') !== -1) {
+            tb.innerHTML = '<tr><td colspan="4">⚠️ Sem resposta do servidor. <a href="" onclick="location.reload();return false" style="color:var(--gold)">Tentar novamente</a> ou verifique sua conexão.</td></tr>';
+          }
+        });
+      }, 15000);
+    })();
+  </script>
   <script type="module">
     import { supabase } from './assets/js/supabaseClient.js';
     import { requireAuth } from './assets/js/guard.js';
@@ -141,15 +167,20 @@
     ownerLine.innerHTML = `Logado como <strong>${esc(me.nome)}</strong> (dono). Gerencie matérias e o quadro abaixo.`;
 
     async function carregar() {
-      const { data, error } = await supabase.from('profiles').select('id, nome, email, role, status, created_at').order('created_at', { ascending: false });
-      if (error) { tbody.innerHTML = '<tr><td colspan="4">Erro ao carregar: ' + esc(error.message) + '</td></tr>'; return; }
-      all = data;
-      document.getElementById('cTotal').textContent = all.length;
-      document.getElementById('cPend').textContent = all.filter((p) => p.status === 'pendente').length;
-      const nPend = all.filter((p) => p.status === 'pendente').length;
-      document.getElementById('badgePend').textContent = nPend ? `(${nPend})` : '';
-      document.getElementById('cAprov').textContent = all.filter((p) => p.status === 'aprovado').length;
-      render();
+      try {
+        const { data, error } = await supabase.from('profiles').select('id, nome, email, role, status, created_at').order('created_at', { ascending: false });
+        if (error) throw error;
+        all = data || [];
+        document.getElementById('cTotal').textContent = all.length;
+        document.getElementById('cPend').textContent = all.filter((p) => p.status === 'pendente').length;
+        document.getElementById('cAprov').textContent = all.filter((p) => p.status === 'aprovado').length;
+        const nPend = all.filter((p) => p.status === 'pendente').length;
+        document.getElementById('badgePend').textContent = nPend ? `(${nPend})` : '';
+        if (!all.length) { tbody.innerHTML = '<tr><td colspan="4">Nenhum correspondente cadastrado até o momento.</td></tr>'; return; }
+        render();
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="4">⚠️ Não foi possível carregar: ' + esc((e && e.message) || e) + '</td></tr>';
+      }
     }
 
     function render() {
@@ -179,13 +210,19 @@
     const tbodyM = document.getElementById('tbodyMats');
 
     async function carregarMats() {
-      const { data, error } = await supabase.from('noticias').select('id, slug, categoria, titulo, autor_nome, status, created_at').order('created_at', { ascending: false }).limit(100);
-      if (error) { tbodyM.innerHTML = '<tr><td colspan="4">Erro: ' + esc(error.message) + '</td></tr>'; return; }
-      mats = data || [];
-      document.getElementById('mTotal').textContent = mats.length;
-      document.getElementById('mPend').textContent = mats.filter((m) => m.status === 'pendente').length;
-      document.getElementById('mPub').textContent = mats.filter((m) => m.status === 'publicada').length;
-      renderMats();
+      try {
+        const { data, error } = await supabase.from('noticias').select('id, slug, categoria, titulo, autor_nome, status, created_at').order('created_at', { ascending: false }).limit(100);
+        if (error) throw error;
+        mats = data || [];
+        document.getElementById('mTotal').textContent = mats.length;
+        document.getElementById('mPend').textContent = mats.filter((m) => m.status === 'pendente').length;
+        document.getElementById('mPub').textContent = mats.filter((m) => m.status === 'publicada').length;
+        if (!mats.length) { tbodyM.innerHTML = '<tr><td colspan="4">Nenhuma matéria cadastrada até o momento.</td></tr>'; return; }
+        renderMats();
+      } catch (e) {
+        const hint = (e && e.code === '42P01') ? ' Rode o arquivo <b>noticias.sql</b> no Supabase.' : '';
+        tbodyM.innerHTML = '<tr><td colspan="4">⚠️ Não foi possível carregar as matérias: ' + esc((e && e.message) || e) + hint + '</td></tr>';
+      }
     }
 
     function renderMats() {

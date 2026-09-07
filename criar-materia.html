@@ -338,7 +338,7 @@
           slug = `${v.slug}-${n++}`;
         }
         const { error } = await supabase.from('noticias').insert({
-          ...v, slug, status, autor_id: autorId, autor_nome: me.nome
+          ...v, slug, status, autor_id: autorId, autor_nome: (me.nome || 'Redação SCTV')
         });
         if (error) throw error;
         const nomes = { rascunho: 'Rascunho salvo', pendente: 'Enviada para aprovação', publicada: 'Publicada' };
